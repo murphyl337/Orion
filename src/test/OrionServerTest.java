@@ -1,7 +1,11 @@
 package test;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+
 import main.OrionServer;
 
 import org.junit.Before;
@@ -23,8 +27,25 @@ public class OrionServerTest {
 	}
 	
 	@Test
-	public void startServerSetsRunningToTrueWhenSocketOpened(){
+	public void startServerSetsRunningToTrueWhenSocketOpened() throws IOException{
 		server.startServer(8000, "");
 		assertTrue(server.isRunning());
+		server.getServerSocket().close();
+	}
+	
+	@Test
+	public void stopServerClosesServerSocket() throws Exception {
+		server.startServer(8000, "");
+		assertTrue(server.isRunning());
+		server.stopServer();
+		assertTrue(server.getServerSocket().isClosed());
+	}
+	
+	@Test
+	public void stopServerSetsRunningToFalse() throws Exception {
+		server.startServer(8000, "");
+		assertTrue(server.isRunning());
+		server.stopServer();
+		assertFalse(server.isRunning());
 	}
 }

@@ -26,6 +26,16 @@ public class OrionServer {
 		setRunning(true);
 	}
 
+	public void stopServer() {
+		setRunning(false);
+		try{
+			serverSocket.close();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+
 	public boolean isRunning() {
 		return running;
 	}
@@ -49,5 +59,6 @@ public class OrionServer {
 	public void setDocRoot(String docRoot) {
 		this.docRoot = docRoot;
 	}
+
 
 }
