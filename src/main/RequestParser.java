@@ -1,6 +1,14 @@
 package main;
 
+import java.io.BufferedReader;
+import java.util.Scanner;
+
 public class RequestParser {
+	
+	public OrionRequest parse(BufferedReader requestReader){
+		String requestString = readerToString(requestReader);
+		return parse(requestString);
+	}
 
 	public OrionRequest parse(String requestString) {
 		OrionRequest request = new OrionRequest();
@@ -35,5 +43,10 @@ public class RequestParser {
 	public boolean hasFileExtension(String filePath) {
 		int charactersAfterPeriod = (filePath.length() - 1) - filePath.lastIndexOf(".");
         return charactersAfterPeriod >= 2 && charactersAfterPeriod <= 4;
+	}
+
+	public String readerToString(BufferedReader requestReader) {
+		Scanner s = new Scanner(requestReader).useDelimiter("\\A");
+	    return s.hasNext() ? s.next() : "";
 	}
 }

@@ -1,6 +1,13 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+
 import main.OrionRequest;
 import main.RequestParser;
 
@@ -14,7 +21,7 @@ public class RequestParserTest {
 	public void setup() {
 		parser = new RequestParser();
 	}
-
+	
 	@Test
 	public void parsesHeader() {
 		String requestString = "GET / HTTP/1.1\nHost: localhost:5000\n";
@@ -51,5 +58,12 @@ public class RequestParserTest {
 	public void hasFileExtensionTest() throws Exception {
 		assertFalse(parser.hasFileExtension("/doop/"));
 		assertTrue(parser.hasFileExtension("shoop/doop.js"));
+	}
+	
+	@Test
+	public void convertsBufferedReaderToStringTest() throws Exception {
+		String requestString = "GET / HTTP/1.1\nHost: localhost:5000\n";
+		BufferedReader requestReader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(requestString.getBytes())));
+		assertTrue(parser.readerToString(requestReader).equals(requestString));
 	}
 }

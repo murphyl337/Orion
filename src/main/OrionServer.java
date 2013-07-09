@@ -42,6 +42,7 @@ public class OrionServer {
 		try {
 			serverSocket = new ServerSocket(port);
 			this.docRoot = docRoot;
+			System.out.println("Orion server has started on port: " + port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
