@@ -21,5 +21,11 @@ public class FileCheckerTest {
 		assertTrue(checker.fileExists("index.html"));
 		assertFalse(checker.fileExists("doop.doop"));
 	}
+	
+	@Test
+	public void getFileExtensionTest(){
+		assertTrue(checker.getFileExtension("index.html").equals("html"));
+		assertTrue(checker.getFileExtension("doop.pdf").equals("pdf"));
+	}
 
 }

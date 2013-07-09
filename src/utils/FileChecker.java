@@ -14,6 +14,11 @@ public class FileChecker {
 		File file = new File(rootDirectory + fileName);
 		return file.exists();
 	}
+
+	public String getFileExtension(String file) {
+		int extensionIndex = file.indexOf(".");
+		return file.substring(extensionIndex + 1);
+	}
 	
 	
 

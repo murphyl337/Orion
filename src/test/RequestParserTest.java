@@ -43,6 +43,10 @@ public class RequestParserTest {
 		String requestString = "GET /doop HTTP/1.1\n derp";
 		OrionRequest request = parser.parse(requestString);
 		assertEquals("/doop/", request.getRoute());
+		
+		requestString = "GET /index.html HTTP/1.1\n derp";
+		request = parser.parse(requestString);
+		assertEquals("/index.html", request.getRoute());
 	}
 	
 	@Test
