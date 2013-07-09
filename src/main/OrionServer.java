@@ -1,6 +1,7 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,16 +26,14 @@ public class OrionServer {
 		OutputStream output = null;
 		while (true) {
 			clientConnection = serverSocket.accept();
-			if (running) {
-				input = clientConnection.getInputStream();
-				output = clientConnection.getOutputStream();
-				
-				BufferedReader in = new BufferedReader(new InputStreamReader(input));
-				String requestLine;
-				while(!(requestLine = in.readLine()).equals(""))
-					System.out.println(requestLine);
-				in.close();
-			}
+			input = clientConnection.getInputStream();
+			output = clientConnection.getOutputStream();
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(input));
+			OrionRequest request = new RequestParser().parse(in);
+			//get response for request
+			//write response to output
+			clientConnection.close();
 		}
 	}
 

@@ -4,18 +4,24 @@ import java.io.BufferedReader;
 import java.util.Scanner;
 
 public class RequestParser {
-	
-	public OrionRequest parse(BufferedReader requestReader){
+
+	public OrionRequest parse(BufferedReader requestReader) {
 		String requestString = readerToString(requestReader);
 		return parse(requestString);
 	}
 
 	public OrionRequest parse(String requestString) {
 		OrionRequest request = new OrionRequest();
-		request.setHeader(parseHeader(requestString));
-		request.setMethod(parseMethod(requestString));
-		request.setRoute(parseRoute(requestString));
+		try {
+			request.setHeader(parseHeader(requestString));
+			request.setMethod(parseMethod(requestString));
+			request.setRoute(parseRoute(requestString));
+
+		} catch (ArrayIndexOutOfBoundsException e) {
+			e.printStackTrace();
+		}
 		return request;
+
 	}
 
 	private String[] parseHeader(String requestString) {
@@ -30,23 +36,28 @@ public class RequestParser {
 
 	private String parseRoute(String requestString) {
 		String[] header = parseHeader(requestString);
+		System.out.println("parseRoute, header length: " + header.length);
+		for (int i = 0; i < header.length; i++) {
+			System.out.println("Header[" + i + "]: " + header[i]);
+		}
 		String route = header[1];
-		if(hasTrailingSlash(route) || hasFileExtension(route))
+		if (hasTrailingSlash(route) || hasFileExtension(route))
 			return route;
 		return route + "/";
 	}
 
 	public boolean hasTrailingSlash(String route) {
-		return route.charAt(route.length()-1) == ('/');
+		return route.charAt(route.length() - 1) == ('/');
 	}
 
 	public boolean hasFileExtension(String filePath) {
-		int charactersAfterPeriod = (filePath.length() - 1) - filePath.lastIndexOf(".");
-        return charactersAfterPeriod >= 2 && charactersAfterPeriod <= 4;
+		int charactersAfterPeriod = (filePath.length() - 1)
+				- filePath.lastIndexOf(".");
+		return charactersAfterPeriod >= 2 && charactersAfterPeriod <= 4;
 	}
 
 	public String readerToString(BufferedReader requestReader) {
 		Scanner s = new Scanner(requestReader).useDelimiter("\\A");
-	    return s.hasNext() ? s.next() : "";
+		return s.hasNext() ? s.next() : "";
 	}
 }
