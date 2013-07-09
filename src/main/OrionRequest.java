@@ -2,7 +2,7 @@ package main;
 
 public class OrionRequest {
 	private String[] header;
-	private String rawRoute;
+	private String fullRoute;
 	private String route;
 	private String method;
 
@@ -14,12 +14,12 @@ public class OrionRequest {
 		this.header = header;
 	}
 
-	public String getRawRoute() {
-		return rawRoute;
+	public String getFullRoute() {
+		return fullRoute;
 	}
 
-	public void setRawRoute(String rawRoute) {
-		this.rawRoute = rawRoute;
+	public void setFullRoute(String fullRoute) {
+		this.fullRoute = fullRoute;
 	}
 
 	public String getMethod() {
