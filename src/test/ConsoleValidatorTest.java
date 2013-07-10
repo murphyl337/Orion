@@ -1,13 +1,14 @@
 package test;
 
-import static main.ConsoleValidator.isInteger;
-import static main.ConsoleValidator.isValidPortInput;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static utils.ConsoleValidator.isInteger;
+import static utils.ConsoleValidator.isValidPortInput;
 
-import main.ConsoleValidator;
 
 import org.junit.Test;
+
+import utils.ConsoleValidator;
 
 public class ConsoleValidatorTest {
 	

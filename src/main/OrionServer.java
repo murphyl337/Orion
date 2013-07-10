@@ -1,13 +1,17 @@
 package main;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import response.OrionResponse;
+
+import utils.RequestParser;
+import utils.Responder;
 
 public class OrionServer {
 	private boolean running;
@@ -29,12 +33,32 @@ public class OrionServer {
 			input = clientConnection.getInputStream();
 			output = clientConnection.getOutputStream();
 			
-			BufferedReader in = new BufferedReader(new InputStreamReader(input));
-			OrionRequest request = new RequestParser().parse(in);
+			OrionRequest request = getRequest(input);
+			OrionResponse response = getResponse(request);
 			//get response for request
 			//write response to output
 			clientConnection.close();
 		}
+	}
+
+
+	private OrionRequest getRequest(InputStream input) {
+		BufferedReader rawRequest = readRequest(input);
+		OrionRequest request = parseRequest(rawRequest);
+		return request;
+	}
+
+	private OrionResponse getResponse(OrionRequest request) {
+		OrionResponse response = new Responder(docRoot).respond(request);
+		return response;
+	}
+
+	private BufferedReader readRequest(InputStream input) {
+		return new BufferedReader(new InputStreamReader(input));
+	}
+
+	private OrionRequest parseRequest(BufferedReader in) {
+		return new RequestParser().parse(in);
 	}
 
 	public void startServer(int port, String docRoot) {

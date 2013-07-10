@@ -9,10 +9,11 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 
 import main.OrionRequest;
-import main.RequestParser;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import utils.RequestParser;
 
 public class RequestParserTest {
 	RequestParser parser;
