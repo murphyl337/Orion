@@ -13,7 +13,8 @@ public class Responder {
 	}
 
 	public OrionResponse respond(OrionRequest request) {
-		return new StatusCodeResponse(200);
+		if(request != null) return new StatusCodeResponse(200);
+		return null;
 	}
 	
 	public String getRoot() {
