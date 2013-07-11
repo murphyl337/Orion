@@ -1,20 +1,26 @@
 package utils;
 
+import main.OrionRequest;
+import response.FileResponse;
 import response.OrionResponse;
 import response.StatusCodeResponse;
-import main.OrionRequest;
 
 public class Responder {
 
 	private String root;
 
-	public Responder(String docRoot) {
-		this.setRoot(docRoot);
+	public Responder(String root) {
+		this.setRoot(root);
 	}
 
 	public OrionResponse respond(OrionRequest request) {
-		if(request != null) return new StatusCodeResponse(200);
-		return null;
+		return new StatusCodeResponse(200);
+		
+//		FileChecker fileChecker = new FileChecker(root);
+//		if(fileChecker.fileExists(request.getRoute())){
+//			return new FileResponse(root, request.getRoute());
+//		}
+//		return null;
 	}
 	
 	public String getRoot() {

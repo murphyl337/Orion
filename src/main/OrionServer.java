@@ -9,17 +9,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import response.OrionResponse;
-
 import utils.RequestParser;
 import utils.Responder;
 
 public class OrionServer {
 	private boolean running;
-	private String docRoot;
+	private String rootDir;
 	private String request;
 	private ServerSocket serverSocket;
+	private int port;
 
-	public OrionServer() {
+	public OrionServer(int port, String rootDir) {
+		this.setPort(port);
+		this.rootDir = rootDir;
 		running = false;
 		serverSocket = null;
 	}
@@ -28,19 +30,26 @@ public class OrionServer {
 		Socket clientConnection = null;
 		InputStream input = null;
 		OutputStream output = null;
+		
 		while (true) {
+			System.out.println("Getting the client socket...");
 			clientConnection = serverSocket.accept();
 			input = clientConnection.getInputStream();
 			output = clientConnection.getOutputStream();
 			
 			OrionRequest request = getRequest(input);
 			OrionResponse response = getResponse(request);
-			//get response for request
-			//write response to output
+
+			System.out.println("Got response with header...");
+			System.out.println(response.getHeader());
+			
+			response.write(output);
+			System.out.println("Wrote response to socket!");
+			
 			clientConnection.close();
+			System.out.println("Closed client socket");
 		}
 	}
-
 
 	private OrionRequest getRequest(InputStream input) {
 		BufferedReader rawRequest = readRequest(input);
@@ -49,7 +58,7 @@ public class OrionServer {
 	}
 
 	private OrionResponse getResponse(OrionRequest request) {
-		OrionResponse response = new Responder(docRoot).respond(request);
+		OrionResponse response = new Responder(rootDir).respond(request);
 		return response;
 	}
 
@@ -61,10 +70,9 @@ public class OrionServer {
 		return new RequestParser().parse(in);
 	}
 
-	public void startServer(int port, String docRoot) {
+	public void startServer() {
 		try {
 			serverSocket = new ServerSocket(port);
-			this.docRoot = docRoot;
 			System.out.println("Orion server has started on port: " + port);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -97,12 +105,12 @@ public class OrionServer {
 		this.serverSocket = serverSocket;
 	}
 
-	public String getDocRoot() {
-		return docRoot;
+	public String getRootDir() {
+		return rootDir;
 	}
 
-	public void setDocRoot(String docRoot) {
-		this.docRoot = docRoot;
+	public void setRootDir(String rootDir) {
+		this.rootDir = rootDir;
 	}
 
 	public String getRequest() {
@@ -111,6 +119,14 @@ public class OrionServer {
 
 	public void setRequest(String request) {
 		this.request = request;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 }

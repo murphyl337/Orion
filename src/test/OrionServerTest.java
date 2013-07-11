@@ -16,12 +16,12 @@ public class OrionServerTest {
 
 	@Before
 	public void setup() {
-		server = new OrionServer();
+		server = new OrionServer(8000, "");
 	}
 
 	@Test
 	public void startServerOpensServerSocket() throws Exception {
-		server.startServer(8000, "");
+		server.startServer();
 		assertEquals(8000, server.getServerSocket().getLocalPort());
 		server.getServerSocket().close();
 	}
@@ -29,14 +29,14 @@ public class OrionServerTest {
 	@Test
 	public void startServerSetsRunningToTrueWhenSocketOpened()
 			throws IOException {
-		server.startServer(8000, "");
+		server.startServer();
 		assertTrue(server.isRunning());
 		server.getServerSocket().close();
 	}
 
 	@Test
 	public void stopServerClosesServerSocket() throws Exception {
-		server.startServer(8000, "");
+		server.startServer();
 		assertTrue(server.isRunning());
 		server.stopServer();
 		assertTrue(server.getServerSocket().isClosed());
@@ -44,7 +44,7 @@ public class OrionServerTest {
 
 	@Test
 	public void stopServerSetsRunningToFalse() throws Exception {
-		server.startServer(8000, "");
+		server.startServer();
 		assertTrue(server.isRunning());
 		server.stopServer();
 		assertFalse(server.isRunning());
