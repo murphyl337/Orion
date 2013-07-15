@@ -22,7 +22,7 @@ public class RequestParserTest {
 	public void setup() {
 		parser = new RequestParser();
 	}
-	
+
 	@Test
 	public void parsesHeader() {
 		String requestString = "GET / HTTP/1.1\nHost: localhost:5000\n";
@@ -38,37 +38,39 @@ public class RequestParserTest {
 		OrionRequest request = parser.parse(requestString);
 		assertEquals("GET", request.getMethod());
 	}
-	
+
 	@Test
-	public void parsesRoute(){
+	public void parsesRoute() {
 		String requestString = "GET /doop HTTP/1.1\n derp";
 		OrionRequest request = parser.parse(requestString);
 		assertEquals("/doop/", request.getRoute());
-		
+
 		requestString = "GET /index.html HTTP/1.1\n derp";
 		request = parser.parse(requestString);
 		assertEquals("/index.html", request.getRoute());
 	}
-	
+
 	@Test
 	public void hasTrailingSlashTest() throws Exception {
 		String route = "/doop";
 		assertFalse(parser.hasTrailingSlash(route));
-		
+
 		route = "doop/";
 		assertTrue(parser.hasTrailingSlash(route));
 	}
-	
+
 	@Test
 	public void hasFileExtensionTest() throws Exception {
 		assertFalse(parser.hasFileExtension("/doop/"));
 		assertTrue(parser.hasFileExtension("shoop/doop.js"));
 	}
-	
+
 	@Test
 	public void convertsBufferedReaderToStringTest() throws Exception {
-		String requestString = "GET / HTTP/1.1\nHost: localhost:5000\n";
-		BufferedReader requestReader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(requestString.getBytes())));
-		assertTrue(parser.readerToString(requestReader).equals(requestString));
+		String requestString = "GET / HTTP/1.1\r\nHost: localhost:5000\r\n";
+		BufferedReader requestReader = new BufferedReader(
+				new InputStreamReader(new ByteArrayInputStream(
+						requestString.getBytes())));
+		assertEquals(requestString, parser.readerToString(requestReader));
 	}
 }

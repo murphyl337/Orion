@@ -2,6 +2,7 @@ package response;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 import utils.HeaderBuilder;
 
@@ -24,7 +25,7 @@ public class StatusCodeResponse implements OrionResponse {
 	public void setHeader() {
 		HeaderBuilder builder = new HeaderBuilder();
 		builder.setStatus(code);
-		builder.setContentType("text/plain");
+		builder.setContentType("text/html");
 		builder.setContentLength(new Long(getBody().length()));
 
 		this.header = builder.getHeader();
@@ -33,7 +34,8 @@ public class StatusCodeResponse implements OrionResponse {
 	@Override
 	public void write(OutputStream output) {
 		try {
-			output.write(getBody().getBytes());
+			output.write(getBody().getBytes(Charset.forName("UTF-8")));
+			output.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,8 +44,8 @@ public class StatusCodeResponse implements OrionResponse {
 
 	@Override
 	public void setBody() {
-		this.body = "HELLO WORLD";
-//		this.body = "<html><body><h2>" + "Status Code: " + String.valueOf(code) + "</h2></body></html>";
+		this.body = "<html><body><h2>" + "Status Code: " + String.valueOf(code) + "</h2>" +
+				"<p>Sorry, the file you've requested was not found :(</p>" + "</body></html>";
 
 	}
 

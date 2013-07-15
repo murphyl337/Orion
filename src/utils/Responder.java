@@ -14,13 +14,12 @@ public class Responder {
 	}
 
 	public OrionResponse respond(OrionRequest request) {
-		return new StatusCodeResponse(200);
-		
-//		FileChecker fileChecker = new FileChecker(root);
-//		if(fileChecker.fileExists(request.getRoute())){
-//			return new FileResponse(root, request.getRoute());
-//		}
-//		return null;
+		FileChecker fileChecker = new FileChecker(root);
+		if(fileChecker.fileExists(request.getRoute())){
+			System.out.println("FOUND FILE");
+			return new FileResponse(root, request.getRoute());
+		}
+		return new StatusCodeResponse(404);
 	}
 	
 	public String getRoot() {

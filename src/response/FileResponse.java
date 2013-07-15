@@ -53,8 +53,10 @@ public class FileResponse implements OrionResponse {
 	public void write(OutputStream output) {
 		try {
 			output.write(getHeader().getBytes(Charset.forName("UTF-8")));
-			copyStream(getBody(), output);
+			copyStream(body, output);
 			body.close();
+			output.flush();
+			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -64,14 +66,9 @@ public class FileResponse implements OrionResponse {
 		    throws IOException
 		{
 			File file = new File(filePath);
-		    byte[] buffer = new byte[(int)file.length()];
-		    input.read(buffer);
-		    output.write(buffer);
-//		    while (length != -1) {
-//		        output.write(buffer, 0, length);
-//		        length = input.read(buffer);
-//		    }
-		    
+		    byte[] bytes = new byte[(int)file.length()];
+		    body.read(bytes);
+		    output.write(bytes);
 		}
 
 	@Override
