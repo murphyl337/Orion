@@ -25,43 +25,47 @@ public class HeaderBuilderTest {
 	@Test
 	public void set200StatusTest() {
 		headerBuilder.setStatus(200);
-		assertEquals("HTTP/1.1 200 OK\r\n", headerBuilder.getHeader());				
+		assertEquals("HTTP/1.1 200 OK\r\n\r\n", headerBuilder.getHeader());				
 	}
 
 	@Test
 	public void set404StatusTest() {
 		headerBuilder.setStatus(404);
-		assertEquals("HTTP/1.1 404 Not Found\r\n", headerBuilder.getHeader());
+		assertEquals("HTTP/1.1 404 Not Found\r\n\r\n", headerBuilder.getHeader());
 	}
 	
 	@Test
 	public void set500StatusTest() throws Exception {
 		headerBuilder.setStatus(500);
-		assertEquals("HTTP/1.1 500 Internal Server Error\r\n", headerBuilder.getHeader());
+		assertEquals("HTTP/1.1 500 Internal Server Error\r\n\r\n",headerBuilder.getHeader());
 	}
 	
 	@Test
 	public void generateDateTest(){
 		headerBuilder.setDate();
-		assertTrue(headerBuilder.getHeader().contains("Date: ")); //pointless test?
+		assertTrue(headerBuilder.getHeader().contains("Date: "));
 	}
 	
 	@Test
 	public void generateServerTest() throws Exception {
 		headerBuilder.setServer();
-		assertTrue(headerBuilder.getHeader().equals("Server: Orion\r\n"));
+		assertEquals("Server: Orion\r\n\r\n", headerBuilder.getHeader());
 	}
 	
 	@Test
 	public void generateContentLengthTest() throws Exception {
 		headerBuilder.setContentLength(new Long(500));
-		assertTrue(headerBuilder.getHeader().equals("Content-Length: 500\r\n"));
+		assertEquals("Content-Length: 500\r\n\r\n", headerBuilder.getHeader());
 	}
 	
 	@Test
 	public void generateContentTypeTest() throws Exception {
 		headerBuilder.setContentType("text/html");
-		assertEquals("Content-Type: text/html\r\n", headerBuilder.getHeader());
+		assertEquals("Content-Type: text/html\r\n\r\n", headerBuilder.getHeader());
 	}
 
+	public String getFinalString(String headerPiece){
+		return headerPiece + "\r\n";
+	}
+	
 }

@@ -46,7 +46,7 @@ public class HeaderBuilder {
 	}
 
 	public String getHeader() {
-		return header;
+		return header + NEWLINE;
 	}
 
 	public void setHeader(String header) {

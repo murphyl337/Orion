@@ -3,6 +3,7 @@ package response;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -52,10 +53,11 @@ public class FileResponse implements OrionResponse {
 	@Override
 	public void write(OutputStream output) {
 		try {
+			output = (FileOutputStream) output;
 			output.write(getHeader().getBytes(Charset.forName("UTF-8")));
+			output.flush();
 			copyStream(body, output);
 			body.close();
-			output.flush();
 			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
