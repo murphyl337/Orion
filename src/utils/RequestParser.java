@@ -55,7 +55,7 @@ public class RequestParser {
 	}
 
 	public String readerToString(BufferedReader requestReader) {
-		Scanner s = new Scanner(requestReader).useDelimiter("\r\n");
+		Scanner s = new Scanner(requestReader).useDelimiter("\r\n\r\n");
 		return s.hasNext() ? s.next() : "";
 	}
 }

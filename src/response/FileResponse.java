@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import utils.FileChecker;
 import utils.HeaderBuilder;
 
 public class FileResponse implements OrionResponse {
@@ -22,9 +23,11 @@ public class FileResponse implements OrionResponse {
 	private String filePath;
 	private String header;
 	private FileInputStream body;
+	private FileChecker fileChecker;
 	
 	public FileResponse(String root, String requestedFile){
 		this.filePath = root + requestedFile;
+		this.fileChecker = new FileChecker(root);
 		setBody();
 		setHeader();
 	}
@@ -35,7 +38,7 @@ public class FileResponse implements OrionResponse {
 		builder.setStatus(200);
 		builder.setDate();
 		builder.setServer();
-		builder.setContentType("text/html");
+		builder.setContentType(fileChecker.getMimeType(fileChecker.getFileExtension(filePath)));
 		builder.setContentLength(new File(filePath).length());
 
 		this.header = builder.getHeader();

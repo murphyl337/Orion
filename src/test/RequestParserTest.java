@@ -67,10 +67,11 @@ public class RequestParserTest {
 
 	@Test
 	public void convertsBufferedReaderToStringTest() throws Exception {
-		String requestString = "GET / HTTP/1.1\r\nHost: localhost:5000\r\n\r\n";
+		String request = "GET / HTTP/1.1\r\nHost: localhost:5000\r\n\r\n";
+		String expectedRequestString = request.replaceAll("\r\n\r\n", "");
 		BufferedReader requestReader = new BufferedReader(
 				new InputStreamReader(new ByteArrayInputStream(
-						requestString.getBytes())));
-		assertEquals(requestString, parser.readerToString(requestReader));
+						request.getBytes())));
+		assertEquals(expectedRequestString, parser.readerToString(requestReader));
 	}
 }

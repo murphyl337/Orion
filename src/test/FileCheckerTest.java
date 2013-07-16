@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -28,4 +29,11 @@ public class FileCheckerTest {
 		assertTrue(checker.getFileExtension("doop.pdf").equals("pdf"));
 	}
 
+	@Test
+	public void getMIMETypeTest() throws Exception {
+		assertEquals("text/html", checker.getMimeType("html"));
+		assertEquals("text/css", checker.getMimeType("css"));
+		assertEquals("text/javascript", checker.getMimeType("js"));
+	}
+	
 }
