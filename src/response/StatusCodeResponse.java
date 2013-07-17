@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import utils.HeaderBuilder;
+import utils.ResponseHeader;
 
 public class StatusCodeResponse implements OrionResponse {
 	/**
@@ -23,12 +23,12 @@ public class StatusCodeResponse implements OrionResponse {
 	
 	@Override
 	public void setHeader() {
-		HeaderBuilder builder = new HeaderBuilder();
-		builder.setStatus(code);
-		builder.setContentType("text/html");
-		builder.setContentLength(new Long(getBody().length()));
+		ResponseHeader header = new ResponseHeader();
+		header.setStatus(code);
+		header.setContentType("text/html");
+		header.setContentLength(new Long(getBody().length()));
 
-		this.header = builder.getHeader();
+		this.header = header.composeHeader();
 	}
 
 	@Override

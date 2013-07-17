@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import utils.FileChecker;
-import utils.HeaderBuilder;
+import utils.ResponseHeader;
 
 public class FileResponse implements OrionResponse {
 	/**
@@ -34,14 +34,12 @@ public class FileResponse implements OrionResponse {
 	
 	@Override
 	public void setHeader() {
-		HeaderBuilder builder = new HeaderBuilder();
-		builder.setStatus(200);
-		builder.setDate();
-		builder.setServer();
-		builder.setContentType(fileChecker.getMimeType(fileChecker.getFileExtension(filePath)));
-		builder.setContentLength(new File(filePath).length());
-
-		this.header = builder.getHeader();
+		ResponseHeader header = new ResponseHeader();
+		header.setStatus(200);
+		header.setContentType(fileChecker.getMimeType(fileChecker.getFileExtension(filePath)));
+		if(fileChecker.fileExists(filePath))
+			header.setContentLength(new File(filePath).length());
+		this.header = header.composeHeader();
 	}
 
 	@Override
