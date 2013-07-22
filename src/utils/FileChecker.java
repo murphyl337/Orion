@@ -29,7 +29,4 @@ public class FileChecker {
 	public String getMimeType(String extension) {
 		return mimeTypes.get(extension);
 	}
-	
-	
-
 }

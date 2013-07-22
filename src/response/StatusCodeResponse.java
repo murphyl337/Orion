@@ -34,7 +34,7 @@ public class StatusCodeResponse implements OrionResponse {
 	@Override
 	public void write(OutputStream output) {
 		try {
-			//output.write(getHeader().getBytes(Charset.forName("UTF-8")));
+			output.write(getHeader().getBytes(Charset.forName("UTF-8")));
 			output.write(getBody().getBytes(Charset.forName("UTF-8")));
 			output.flush();
 		} catch (IOException e) {

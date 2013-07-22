@@ -22,7 +22,7 @@ public class ResponderTest {
 	
 	@Test
 	public void statusCodeRespondTest() {
-		String requestString = "GET / HTTP/1.1\nHost: localhost:5000\n";
+		String requestString = "GET / HTTP/1.1\r\nHost: localhost:5000\r\n";
 		OrionRequest request = parser.parse(requestString);
 		
 		OrionResponse response = responder.respond(request);

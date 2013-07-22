@@ -1,16 +1,15 @@
 package main;
 
-import java.io.BufferedReader;
+import static java.lang.Runtime.getRuntime;
+import static java.util.concurrent.Executors.newFixedThreadPool;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
 
-import response.OrionResponse;
-import utils.RequestParser;
-import utils.Responder;
+import utils.OrionThreadFactory;
+import utils.ResponseRunner;
 
 public class OrionServer {
 	private boolean running;
@@ -18,6 +17,7 @@ public class OrionServer {
 	private String request;
 	private ServerSocket serverSocket;
 	private int port;
+	private ExecutorService threadPool = newFixedThreadPool(getRuntime().availableProcessors(), new OrionThreadFactory());
 
 	public OrionServer(int port, String rootDir) {
 		this.setPort(port);
@@ -27,47 +27,16 @@ public class OrionServer {
 	}
 
 	public void run() throws IOException {
-		Socket clientConnection = null;
-		InputStream input = null;
-		OutputStream output = null;
-		
+
 		while (true) {
 			System.out.println("Getting the client socket...");
-			clientConnection = serverSocket.accept();
-			input = clientConnection.getInputStream();
-			output = clientConnection.getOutputStream();
-			
-			OrionRequest request = getRequest(input);
-			OrionResponse response = getResponse(request);
+			final Socket clientConnection = serverSocket.accept();
 
-			System.out.println("Got response with header...");
-			System.out.println(response.getHeader());
-			
-			response.write(output);
-			System.out.println("Wrote response to socket!");
-			
-			clientConnection.close();
-			System.out.println("Closed client socket");
+			ResponseRunner responseRunner = new ResponseRunner(
+					clientConnection, rootDir);
+
+			threadPool.execute(responseRunner);
 		}
-	}
-
-	private OrionRequest getRequest(InputStream input) {
-		BufferedReader rawRequest = readRequest(input);
-		OrionRequest request = parseRequest(rawRequest);
-		return request;
-	}
-
-	private OrionResponse getResponse(OrionRequest request) {
-		OrionResponse response = new Responder(rootDir).respond(request);
-		return response;
-	}
-
-	private BufferedReader readRequest(InputStream input) {
-		return new BufferedReader(new InputStreamReader(input));
-	}
-
-	private OrionRequest parseRequest(BufferedReader in) {
-		return new RequestParser().parse(in);
 	}
 
 	public void startServer() {
