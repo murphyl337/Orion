@@ -14,7 +14,6 @@ public class OrionServer {
 	private String request;
 	private ServerSocket serverSocket;
 	private int port;
-	//private ExecutorService threadPool = newFixedThreadPool(getRuntime().availableProcessors(), new OrionThreadFactory());
 
 	public OrionServer(int port, String rootDir) {
 		this.setPort(port);
@@ -36,7 +35,6 @@ public class OrionServer {
 				Thread responseThread = new Thread(responseRunner, "orion-response-thread " + getAllStackTraces().size());
 				System.out.println("Starting thread: " + responseThread.getName());
 				responseThread.run();
-				//threadPool.execute(responseRunner);				
 			}
 			catch(Exception e){
 				e.printStackTrace();

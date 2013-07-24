@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import com.cengage.apprentice.app.main.OrionServer;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import com.cengage.apprentice.app.main.OrionServer;
 
 public class OrionServerTest {
 	private OrionServer server;
@@ -49,5 +49,4 @@ public class OrionServerTest {
 		server.stopServer();
 		assertFalse(server.isRunning());
 	}
-
 }

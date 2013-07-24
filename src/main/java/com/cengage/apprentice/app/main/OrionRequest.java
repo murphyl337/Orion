@@ -14,13 +14,6 @@ public class OrionRequest {
 		this.header = header;
 	}
 
-	public String getFullRoute() {
-		return fullRoute;
-	}
-
-	public void setFullRoute(String fullRoute) {
-		this.fullRoute = fullRoute;
-	}
 
 	public String getMethod() {
 		return method;
