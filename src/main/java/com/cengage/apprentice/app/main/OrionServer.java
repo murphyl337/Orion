@@ -9,7 +9,6 @@ import java.net.Socket;
 import com.cengage.apprentice.app.utils.ResponseRunner;
 
 public class OrionServer {
-	private boolean running;
 	private String rootDir;
 	private String request;
 	private ServerSocket serverSocket;
@@ -18,7 +17,6 @@ public class OrionServer {
 	public OrionServer(int port, String rootDir) {
 		this.setPort(port);
 		this.rootDir = rootDir;
-		running = false;
 		serverSocket = null;
 	}
 
@@ -52,24 +50,14 @@ public class OrionServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		setRunning(true);
 	}
 
 	public void stopServer() {
-		setRunning(false);
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public boolean isRunning() {
-		return running;
-	}
-
-	public void setRunning(boolean running) {
-		this.running = running;
 	}
 
 	public ServerSocket getServerSocket() {

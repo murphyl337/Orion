@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.018" errors="0" skipped="0" tests="7" name="com.cengage.apprentice.app.HeaderBuilderTest">
+<testsuite failures="0" time="0.005" errors="0" skipped="0" tests="5" name="com.cengage.apprentice.app.response.ResponseBuilderTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries"/>
@@ -65,11 +65,9 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.002" classname="com.cengage.apprentice.app.HeaderBuilderTest" name="set200StatusTest"/>
-  <testcase time="0" classname="com.cengage.apprentice.app.HeaderBuilderTest" name="set404StatusTest"/>
-  <testcase time="0" classname="com.cengage.apprentice.app.HeaderBuilderTest" name="set500StatusTest"/>
-  <testcase time="0.009" classname="com.cengage.apprentice.app.HeaderBuilderTest" name="generateDateTest"/>
-  <testcase time="0" classname="com.cengage.apprentice.app.HeaderBuilderTest" name="generateServerTest"/>
-  <testcase time="0" classname="com.cengage.apprentice.app.HeaderBuilderTest" name="generateContentLengthTest"/>
-  <testcase time="0" classname="com.cengage.apprentice.app.HeaderBuilderTest" name="generateContentTypeTest"/>
+  <testcase time="0.001" classname="com.cengage.apprentice.app.response.ResponseBuilderTest" name="generateDateTest"/>
+  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseBuilderTest" name="generateServerTest"/>
+  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseBuilderTest" name="generateContentLengthTest"/>
+  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseBuilderTest" name="generateContentTypeTest"/>
+  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseBuilderTest" name="generateStatusTest"/>
 </testsuite>

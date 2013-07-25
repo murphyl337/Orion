@@ -8,14 +8,17 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 
-import com.cengage.apprentice.app.main.OrionRequest;
-
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import com.cengage.apprentice.app.main.OrionRequest;
 import com.cengage.apprentice.app.utils.RequestParser;
 
 public class RequestParserTest {
+	public @Rule ExpectedException thrown = ExpectedException.none();
+	
 	private static final String MOCK_HTTP_VERSION = "HTTP/1.1";
 	private static final String MOCK_HTTP_ROUTE = "/";
 	private static final String MOCK_HTTP_METHOD = "GET";
@@ -66,11 +69,27 @@ public class RequestParserTest {
 	}
 
 	@Test
-	public void hasFileExtensionTest() throws Exception {
-		assertFalse(parser.hasFileExtension("/doop/"));
+	public void hasFileExtensionIsTrueForFileExtensionsWithLessThanFiveCharactersAndMoreThanTwoChars() throws Exception {
 		assertTrue(parser.hasFileExtension("shoop/doop.js"));
+		assertTrue(parser.hasFileExtension("shoop/doop.xml"));		
+		assertTrue(parser.hasFileExtension("index.html"));
 	}
 
+	@Test
+	public void hasFileExtensionIsFalseForNonFileStrings() throws Exception {
+		assertFalse(parser.hasFileExtension("shoop"));
+	}
+	
+	@Test
+	public void hasFileExtensionIsFalseForFileExtensionsGreaterThanFiveCharacters() throws Exception {
+		assertFalse(parser.hasFileExtension("shoop.superlongfileext"));
+	}
+	
+	@Test
+	public void hasFileExtensionIsFalseForFileExtensionsLessThanTwoCharacters() throws Exception {
+		assertFalse(parser.hasFileExtension("shoop.s"));
+	}
+	
 	@Test
 	public void convertsBufferedReaderToStringTest() throws Exception {
 		String request = "GET / HTTP/1.1\r\nHost: localhost:5000\r\n\r\n";
@@ -79,5 +98,12 @@ public class RequestParserTest {
 				new InputStreamReader(new ByteArrayInputStream(
 						request.getBytes())));
 		assertEquals(expectedRequestString, parser.readerToString(requestReader));
+	}
+	
+	@Test
+	public void parseThrowsArrayIndexOutOfBoundsExceptionForIncompleteRequest() throws Exception {
+		String badRequest = "doop";
+		thrown.expect(ArrayIndexOutOfBoundsException.class);
+		parser.parse(badRequest);
 	}
 }

@@ -55,7 +55,9 @@ public class ResponseRunner implements Runnable{
 	}
 
 	private OrionRequest parseRequest(BufferedReader in) {
-		return new RequestParser().parse(in);
+		RequestParser parser = new RequestParser();
+		String requestString = parser.readerToString(in);
+		return parser.parse(requestString);
 	}
 	
 }

@@ -7,21 +7,13 @@ import com.cengage.apprentice.app.main.OrionRequest;
 
 public class RequestParser {
 
-	public OrionRequest parse(BufferedReader requestReader) {
-		String requestString = readerToString(requestReader);
-		return parse(requestString);
-	}
-
-	public OrionRequest parse(String requestString) {
+	public OrionRequest parse(String requestString)
+			throws ArrayIndexOutOfBoundsException {
 		OrionRequest request = new OrionRequest();
-		try {
-			request.setHeader(parseHeader(requestString));
-			request.setMethod(parseMethod(requestString));
-			request.setRoute(parseRoute(requestString));
+		request.setHeader(parseHeader(requestString));
+		request.setMethod(parseMethod(requestString));
+		request.setRoute(parseRoute(requestString));
 
-		} catch (ArrayIndexOutOfBoundsException e) {
-			e.printStackTrace();
-		}
 		return request;
 
 	}
