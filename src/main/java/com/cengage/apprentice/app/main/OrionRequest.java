@@ -2,7 +2,6 @@ package com.cengage.apprentice.app.main;
 
 public class OrionRequest {
 	private String[] header;
-	private String fullRoute;
 	private String route;
 	private String method;
 

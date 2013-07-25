@@ -10,7 +10,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import com.cengage.apprentice.app.utils.FileChecker;
-import com.cengage.apprentice.app.utils.ResponseHeader;
 
 public class FileResponse implements OrionResponse{
 	/**
