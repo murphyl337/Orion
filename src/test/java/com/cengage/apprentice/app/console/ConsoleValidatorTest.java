@@ -1,3 +1,4 @@
+
 package com.cengage.apprentice.app.console;
 
 import static org.junit.Assert.assertFalse;

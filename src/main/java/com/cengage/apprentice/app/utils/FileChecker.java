@@ -17,7 +17,7 @@ public class FileChecker {
 	}
 
 	public boolean fileExists(String fileName) {
-		File file = new File(getRootDirectory() + fileName);
+		File file = new File(getRootDirectory() + "/" + fileName);
 		return file.exists();
 	}
 

@@ -4,31 +4,56 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.io.File;
+import java.io.IOException;
 
-import com.cengage.apprentice.app.utils.FileChecker;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class FileCheckerTest {
+	@Rule
+	public TemporaryFolder folder = new TemporaryFolder();
+	
 	FileChecker checker;
+	File tempFile;
 	
 	@Before
-	public void setup(){
-		checker = new FileChecker("/Users/tmurphy/common/projects/Orion/web/");
+	public void setup() throws IOException{
+		tempFile = folder.newFile("temp.txt");
+		checker = new FileChecker(folder.getRoot().getAbsolutePath());
 	}
 	
 	@Test
-	public void fileExistsTest() {
-		assertTrue(checker.fileExists("index.html"));
+	public void fileExistsReturnsTrueForFileWithoutFrontSlashTest() {
+		assertTrue(checker.fileExists("temp.txt"));
+	}
+	
+	@Test
+	public void fileExistsReturnsTrueForFileWithFrontSlash() throws Exception {
+		assertTrue(checker.fileExists("/temp.txt"));
+	}
+	
+	@Test
+	public void fileExistsReturnsFalseForFileThatDoesNotExist() throws Exception {
 		assertFalse(checker.fileExists("doop.doop"));
 	}
 	
 	@Test
-	public void directoryExistsTest() throws Exception {
+	public void directoryExistsReturnsTrueForRootDirectory() throws Exception {
 		assertTrue(checker.directoryExists(""));
-		assertFalse(checker.directoryExists("/diio/asdf/"));
 	}
 	
+	@Test
+	public void directoryExistsReturnsFalseForNonExistingDirectory() throws Exception {
+		assertFalse(checker.directoryExists("shoopdawoop"));
+	}
+	
+	@Test
+	public void directoryExistsReturnsFalseForExistingFile() throws Exception {
+		assertFalse(checker.directoryExists("temp.txt"));
+	}
 	@Test
 	public void getFileExtensionTest(){
 		assertTrue(checker.getFileExtension("index.html").equals("html"));
