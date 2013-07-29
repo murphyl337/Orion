@@ -28,7 +28,7 @@ public class ResponseRunner implements Runnable{
 			System.out.println("Got response with header...");
 			System.out.println(response.getHeader());
 			
-			response.write(output);
+			response.write(output, response.getBody());
 			System.out.println("Wrote response to socket!");
 			
 			connection.close();

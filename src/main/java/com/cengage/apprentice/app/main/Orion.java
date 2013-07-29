@@ -9,23 +9,23 @@ public class Orion {
 	public static String rootDirectory = "public";
 
 	public static void main(String[] args) throws IOException {
-		// parseArgs(args);
+		parseArgs(args);
 		OrionServer server = new OrionServer(port, rootDirectory);
 		server.startServer();
 		server.run();
 	}
 
 	public static void parseArgs(String[] args) throws NumberFormatException {
-		//FileChecker checker = new FileChecker("");
+		FileChecker checker = new FileChecker("");
 		int index = 0;
 		for (String arg : args) {
 			if (arg.equals("-p")) {
 				port = Integer.parseInt(args[index + 1]);
 			}
 			if (arg.equals("-d")) {
-				// String tempDir = args[index + 1];
-				// if(checker.directoryExists(tempDir))
-				rootDirectory = args[index + 1];
+				String tempDir = args[index + 1];
+				if(checker.directoryExists(tempDir))
+				rootDirectory = tempDir;
 			}
 			index++;
 		}

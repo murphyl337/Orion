@@ -13,20 +13,29 @@ import com.cengage.apprentice.app.utils.Responder;
 public class ResponderTest {
 	RequestParser parser;
 	Responder responder;
-	
+
 	@Before
-	public void setup(){
+	public void setup() {
 		parser = new RequestParser();
 		responder = new Responder("");
 	}
-	
+
 	@Test
-	public void statusCodeRespondTest() {
+	public void properRequestFormatWithRootRouteReturns200StatusCode() {
 		String requestString = "GET / HTTP/1.1\r\nHost: localhost:5000\r\n";
 		OrionRequest request = parser.parse(requestString);
-		
+
 		OrionResponse response = responder.respond(request);
 		assertTrue(response.getHeader().contains("200"));
 	}
 
+	@Test
+	public void returns404StatusCodeForAnyRouteBesidesRootDir()
+			throws Exception {
+		String requestString = "GET /derp HTTP/1.1\r\nHost: localhost:5000\r\n";
+		OrionRequest request = parser.parse(requestString);
+
+		OrionResponse response = responder.respond(request);
+		assertTrue(response.getHeader().contains("404"));
+	}
 }

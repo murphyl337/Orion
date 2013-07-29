@@ -1,14 +1,16 @@
 package com.cengage.apprentice.app.main;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
+import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
-import com.cengage.apprentice.app.utils.FileChecker;
+import org.junit.rules.TemporaryFolder;
 
 public class OrionTest {
+	@Rule
+	public TemporaryFolder folder = new TemporaryFolder();
+	
 	@Test
 	public void parseArgsChangesPortForValidPortInput() throws Exception {
 		String[] arguments = new String[] {"-p", "5000"};
@@ -27,19 +29,21 @@ public class OrionTest {
 	}
 	
 	@Test
-	public void parseArgsChangesRootDirectory() throws Exception {
-		String[] arguments = new String[] {"-d", "someDir"};
+	public void parseArgsChangesRootForExistingDirectory() throws Exception {
+		String[] arguments = new String[] {"-d", folder.getRoot().getAbsolutePath()};
 		
 		Orion.parseArgs(arguments);
 		
-		assertEquals("someDir", Orion.rootDirectory);
+		assertEquals(folder.getRoot().getAbsolutePath(), Orion.rootDirectory);
 	}
 	
-//	@Test
-//	public void parseArgsChecksIfDirectoryExists() throws Exception {
-//		String[] arguments = new String[] {"-d", "someDir"};
-//		FileChecker checker = Mockito.mock(FileChecker.class);
-//		Orion.parseArgs(arguments);
-//		Mockito.verify(checker).directoryExists("someDir");
-//	}
+	@Test
+	public void parseArgsDoesNotChangeRootForNonExistingDirectory() throws Exception {
+		String[] arguments = new String[] { "-d",
+				"nope" };
+
+		Orion.parseArgs(arguments);
+
+		assertFalse(Orion.rootDirectory.equals(folder.getRoot().getAbsolutePath()));
+	}
 }

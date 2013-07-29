@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-
 public class StatusCodeResponse implements OrionResponse {
 	/**
 	 * 
@@ -13,13 +12,13 @@ public class StatusCodeResponse implements OrionResponse {
 	private int code;
 	private String header;
 	private String body;
-	
-	public StatusCodeResponse(int code){
+
+	public StatusCodeResponse(int code) {
 		this.code = code;
 		setBody();
 		setHeader();
 	}
-	
+
 	public void setHeader() {
 		ResponseHeader header = new ResponseHeader();
 		header.setStatus(code);
@@ -29,19 +28,17 @@ public class StatusCodeResponse implements OrionResponse {
 		this.header = header.composeHeader();
 	}
 
-	public void write(OutputStream output) {
-		try {
-			output.write(getHeader().getBytes(Charset.forName("UTF-8")));
-			output.write(getBody().getBytes(Charset.forName("UTF-8")));
-			output.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void write(OutputStream output, Object body) throws IOException {
+		output.write(getHeader().getBytes(Charset.forName("UTF-8")));
+		output.write(((String) body).getBytes(Charset.forName("UTF-8")));
+		output.flush();
 	}
 
 	public void setBody() {
-		this.body = "<html><body><h2>" + "Status Code: " + String.valueOf(code) + "</h2>" +
-				"<p>Sorry, the file you've requested was not found :(</p>" + "</body></html>";
+		this.body = "<html><body><h2>" + "Status Code: " + String.valueOf(code)
+				+ "</h2>"
+				+ "<p>Sorry, the file you've requested was not found :(</p>"
+				+ "</body></html>";
 
 	}
 
@@ -52,6 +49,5 @@ public class StatusCodeResponse implements OrionResponse {
 	public String getBody() {
 		return body;
 	}
-
 
 }

@@ -14,6 +14,7 @@ public class FileChecker {
 		mimeTypes.put("html", "text/html");
 		mimeTypes.put("css", "text/css");
 		mimeTypes.put("js", "text/javascript");
+		mimeTypes.put("txt", "plain/text");
 	}
 
 	public boolean fileExists(String fileName) {
