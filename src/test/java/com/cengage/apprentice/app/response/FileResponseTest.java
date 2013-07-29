@@ -1,6 +1,5 @@
 package com.cengage.apprentice.app.response;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;

@@ -1,5 +1,6 @@
 package com.cengage.apprentice.app.utils;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -42,31 +43,38 @@ public class RequestParserTest {
 	}
 
 	@Test
-	public void parsesMethod() throws Exception {
+	public void parseMethodSetsGETAsRequestMethodForGetRequest() throws Exception {
 		String requestString = "GET / HTTP/1.1\n";
 		OrionRequest request = parser.parse(requestString);
 		assertEquals(MOCK_HTTP_METHOD, request.getMethod());
 	}
 
 	@Test
-	public void parsesRoute() {
+	public void parseRouteAddsTrailingSlashToRouteIfNoFileExtensionFound() {
 		String requestString = "GET /doop HTTP/1.1\n derp";
 		OrionRequest request = parser.parse(requestString);
 		assertEquals("/doop/", request.getRoute());
-
-		requestString = "GET /index.html HTTP/1.1\n derp";
-		request = parser.parse(requestString);
+	}
+	
+	@Test
+	public void hasTrailingSlashIsFalseForStringsNotEndingInBackSlash() throws Exception {
+		String route = "/doop";
+		assertFalse(parser.hasTrailingSlash(route));
+	}
+	
+	@Test
+	public void hasTrailingSlashIsTrueForStringsEndingWithBackSlash() throws Exception {
+		String route = "doop/";
+		assertTrue(parser.hasTrailingSlash(route));
+	}
+	
+	@Test
+	public void parseRouteDoesNotAddTrailingSlashToRouteIfFileExtensionFound() throws Exception {
+		String requestString = "GET /index.html HTTP/1.1\n derp";
+		OrionRequest request = parser.parse(requestString);
 		assertEquals("/index.html", request.getRoute());
 	}
 
-	@Test
-	public void hasTrailingSlashTest() throws Exception {
-		String route = "/doop";
-		assertFalse(parser.hasTrailingSlash(route));
-
-		route = "doop/";
-		assertTrue(parser.hasTrailingSlash(route));
-	}
 
 	@Test
 	public void hasFileExtensionIsTrueForFileExtensionsWithLessThanFiveCharactersAndMoreThanTwoChars() throws Exception {
