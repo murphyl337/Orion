@@ -1,6 +1,7 @@
 package com.cengage.apprentice.app.main;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 
 import com.cengage.apprentice.app.utils.FileChecker;
 
@@ -10,9 +11,9 @@ public class Orion {
 
 	public static void main(String[] args) throws IOException {
 		parseArgs(args);
-		OrionServer server = new OrionServer(port, rootDirectory);
-		server.startServer();
-		server.run();
+		ServerSocket serverSocket = new ServerSocket(port);
+		OrionServer server = new OrionServer(serverSocket, rootDirectory);
+		server.listen();
 	}
 
 	public static void parseArgs(String[] args) throws NumberFormatException {
@@ -25,7 +26,7 @@ public class Orion {
 			if (arg.equals("-d")) {
 				String tempDir = args[index + 1];
 				if(checker.directoryExists(tempDir))
-				rootDirectory = tempDir;
+					rootDirectory = tempDir;
 			}
 			index++;
 		}

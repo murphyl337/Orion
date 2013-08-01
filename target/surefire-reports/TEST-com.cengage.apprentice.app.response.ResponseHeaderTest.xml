@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.008" errors="0" skipped="0" tests="8" name="com.cengage.apprentice.app.response.ResponseHeaderTest">
+<testsuite failures="0" time="0.009" errors="0" skipped="0" tests="8" name="com.cengage.apprentice.app.response.ResponseHeaderTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries"/>
@@ -22,7 +22,7 @@
     <property name="basedir" value="/Users/tmurphy/common/projects/Orion"/>
     <property name="java.endorsed.dirs" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/endorsed"/>
     <property name="os.arch" value="x86_64"/>
-    <property name="surefire.real.class.path" value="/Users/tmurphy/common/projects/Orion/target/surefire/surefirebooter215594857840058019.jar"/>
+    <property name="surefire.real.class.path" value="/Users/tmurphy/common/projects/Orion/target/surefire/surefirebooter419603218324587197.jar"/>
     <property name="java.io.tmpdir" value="/var/folders/01/dx39b8f53y7b_9rbgb8ndbwjyw3w8m/T/"/>
     <property name="line.separator" value="
 "/>
@@ -46,7 +46,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home"/>
-    <property name="sun.java.command" value="/Users/tmurphy/common/projects/Orion/target/surefire/surefirebooter215594857840058019.jar /Users/tmurphy/common/projects/Orion/target/surefire/surefire9002015232909627862tmp /Users/tmurphy/common/projects/Orion/target/surefire/surefire5096231598659549764tmp"/>
+    <property name="sun.java.command" value="/Users/tmurphy/common/projects/Orion/target/surefire/surefirebooter419603218324587197.jar /Users/tmurphy/common/projects/Orion/target/surefire/surefire4497277389539220852tmp /Users/tmurphy/common/projects/Orion/target/surefire/surefire2272297171450204499tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="apple.awt.CToolkit"/>
@@ -65,11 +65,11 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.001" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="set200StatusTest"/>
-  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="set404StatusTest"/>
-  <testcase time="0.001" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="set500StatusTest"/>
-  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="generateDateTest"/>
-  <testcase time="0.001" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="generateServerTest"/>
+  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="set200StatusTest"/>
+  <testcase time="0.001" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="set404StatusTest"/>
+  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="set500StatusTest"/>
+  <testcase time="0.001" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="generateDateTest"/>
+  <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="generateServerTest"/>
   <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="generateContentLengthTest"/>
   <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="generateContentTypeTest"/>
   <testcase time="0" classname="com.cengage.apprentice.app.response.ResponseHeaderTest" name="composeHeaderTest"/>

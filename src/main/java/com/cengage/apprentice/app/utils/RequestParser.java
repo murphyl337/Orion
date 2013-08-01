@@ -1,8 +1,5 @@
 package com.cengage.apprentice.app.utils;
 
-import java.io.BufferedReader;
-import java.util.Scanner;
-
 import com.cengage.apprentice.app.main.OrionRequest;
 
 public class RequestParser {
@@ -44,10 +41,5 @@ public class RequestParser {
 		int charactersAfterPeriod = (filePath.length() - 1)
 				- filePath.lastIndexOf(".");
 		return charactersAfterPeriod >= 2 && charactersAfterPeriod <= 4;
-	}
-
-	public String readerToString(BufferedReader requestReader) {
-		Scanner s = new Scanner(requestReader).useDelimiter("\r\n\r\n");
-		return s.hasNext() ? s.next() : "";
 	}
 }

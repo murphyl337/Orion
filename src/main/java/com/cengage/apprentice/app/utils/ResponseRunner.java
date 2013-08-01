@@ -1,8 +1,7 @@
 package com.cengage.apprentice.app.utils;
 
-import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -10,54 +9,65 @@ import com.cengage.apprentice.app.main.OrionRequest;
 import com.cengage.apprentice.app.response.OrionResponse;
 
 public class ResponseRunner implements Runnable{
-	private Socket connection;
+
+	private Socket socket;
 	private String rootDir;
+	private String errorMessage;
 	
+	public ResponseRunner(){}
 	public ResponseRunner(Socket socket, String rootDir){
-		this.connection = socket;
-		this.rootDir = rootDir;
+		setSocket(socket);
+		setRootDir(rootDir);
 	}
 	
-	public void run() {
+	public OrionRequest getRequest(InputStream inputStream) {
+		String requestString = StreamConverter.inputStreamToString(inputStream);
+		OrionRequest request = new OrionRequest();
 		try{
-			InputStream input = connection.getInputStream();
-			OutputStream output = connection.getOutputStream();
-			OrionRequest request = getRequest(input);
-			OrionResponse response = getResponse(request);
-			
-			System.out.println("Got response with header...");
-			System.out.println(response.getHeader());
-			
-			response.write(output, response.getBody());
-			System.out.println("Wrote response to socket!");
-			
-			connection.close();
-			System.out.println("Closed client socket");
+			request = new RequestParser().parse(requestString);			
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			System.out.println("Error while parsing request");
+			request = new OrionRequest();
 		}
-	}
-
-	private OrionRequest getRequest(InputStream input) {
-		BufferedReader rawRequest = readRequest(input);
-		OrionRequest request = parseRequest(rawRequest);
 		return request;
 	}
 
-	private OrionResponse getResponse(OrionRequest request) {
-		OrionResponse response = new Responder(rootDir).respond(request);
-		return response;
+	public OrionResponse getResponse(OrionRequest request) {
+		return new Responder(null).respond(request);
+	}
+	
+	public void processRequest(InputStream input, OutputStream output, String rootDir) throws IOException{
+		OrionRequest request = getRequest(input);
+		OrionResponse response = getResponse(request);
+		response.write(output, response.getBody());
 	}
 
-	private BufferedReader readRequest(InputStream input) {
-		return new BufferedReader(new InputStreamReader(input));
+	public void run() {
+		try {
+			processRequest(getSocket().getInputStream(), getSocket().getOutputStream(), rootDir);
+		} catch (IOException e) {
+			errorMessage = "ResponseRunner: IOException processingRequest";
+			System.out.println(errorMessage);
+		}
 	}
-
-	private OrionRequest parseRequest(BufferedReader in) {
-		RequestParser parser = new RequestParser();
-		String requestString = parser.readerToString(in);
-		return parser.parse(requestString);
+	public Socket getSocket() {
+		return socket;
+	}
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+	
+	public String getRootDir(){
+		return rootDir;
+	}
+	
+	public void setRootDir(String dir){
+		this.rootDir = dir;
+	}
+	
+	public String getErrorMessage(){
+		return errorMessage;
 	}
 	
 }

@@ -10,17 +10,16 @@ import com.cengage.apprentice.app.utils.ResponseRunner;
 
 public class OrionServer {
 	private String rootDir;
-	private String request;
 	private ServerSocket serverSocket;
 	private int port;
+	private String errorMessage;
 
-	public OrionServer(int port, String rootDir) {
-		this.setPort(port);
+	public OrionServer(ServerSocket serverSocket, String rootDir) {
 		this.rootDir = rootDir;
-		serverSocket = null;
+		this.serverSocket = serverSocket;
 	}
 
-	public void run() throws IOException {
+	public void listen() throws IOException {
 
 		while (true) {
 			System.out.println("Getting the client socket...");
@@ -43,20 +42,12 @@ public class OrionServer {
 		}
 	}
 
-	public void startServer() {
-		try {
-			serverSocket = new ServerSocket(port);
-			System.out.println("Orion server has started on port: " + port);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void stopServer() {
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			setErrorMessage("IOException when closing port: " + port);
+			System.err.println(errorMessage);
 		}
 	}
 
@@ -76,20 +67,20 @@ public class OrionServer {
 		this.rootDir = rootDir;
 	}
 
-	public String getRequest() {
-		return request;
-	}
-
-	public void setRequest(String request) {
-		this.request = request;
-	}
-
 	public int getPort() {
 		return port;
 	}
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+	
+	public String getErrorMessage(){
+		return errorMessage;
+	}
+	
+	public void setErrorMessage(String message){
+		this.errorMessage = message;
 	}
 
 }

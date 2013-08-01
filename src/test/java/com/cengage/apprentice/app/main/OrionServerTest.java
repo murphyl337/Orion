@@ -1,32 +1,39 @@
 package com.cengage.apprentice.app.main;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doThrow;
+
+import java.io.IOException;
+import java.net.ServerSocket;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.cengage.apprentice.app.main.OrionServer;
+import org.mockito.Mockito;
 
 public class OrionServerTest {
 	private OrionServer server;
-
+	private ServerSocket serverSocket;
+	
 	@Before
-	public void setup() {
-		server = new OrionServer(8000, "");
-	}
-
-	@Test
-	public void startServerOpensServerSocket() throws Exception {
-		server.startServer();
-		assertEquals(8000, server.getServerSocket().getLocalPort());
-		server.getServerSocket().close();
+	public void setup() throws IOException {
+		serverSocket = new ServerSocket(8000);
+		server = new OrionServer(serverSocket, "");
 	}
 
 	@Test
 	public void stopServerClosesServerSocket() throws Exception {
-		server.startServer();
 		server.stopServer();
 		assertTrue(server.getServerSocket().isClosed());
+	}
+	
+	@Test
+	public void stopServerSetsErrorMessageWhenClosingSocketThrowsIOException() throws Exception {
+		ServerSocket mockSocket = Mockito.mock(ServerSocket.class);
+		doThrow(new IOException()).when(mockSocket).close();
+		OrionServer someServer = new OrionServer(mockSocket, "/");
+		
+		someServer.stopServer();
+		
+		assertTrue(someServer.getErrorMessage().contains("IOException when closing port:"));
 	}
 }

@@ -99,25 +99,6 @@ public class RequestParserTest {
 	}
 	
 	@Test
-	public void convertsBufferedReaderToStringTest() throws Exception {
-		String request = "GET / HTTP/1.1\r\nHost: localhost:5000\r\n\r\n";
-		String expectedRequestString = request.replaceAll("\r\n\r\n", "");
-		BufferedReader requestReader = new BufferedReader(
-				new InputStreamReader(new ByteArrayInputStream(
-						request.getBytes())));
-		assertEquals(expectedRequestString, parser.readerToString(requestReader));
-	}
-	
-	@Test
-	public void convertsBufferedReaderToStringReturnsEmptyStringForEmptyReader() throws Exception {
-		String request = "";
-		BufferedReader requestReader = new BufferedReader(
-				new InputStreamReader(new ByteArrayInputStream(
-						request .getBytes())));
-		assertEquals("", parser.readerToString(requestReader));
-	}
-	
-	@Test
 	public void parseThrowsArrayIndexOutOfBoundsExceptionForIncompleteRequest() throws Exception {
 		String badRequest = "doop";
 		thrown.expect(ArrayIndexOutOfBoundsException.class);
