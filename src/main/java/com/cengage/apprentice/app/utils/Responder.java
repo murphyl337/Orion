@@ -6,17 +6,20 @@ import com.cengage.apprentice.app.response.StatusCodeResponse;
 
 public class Responder {
 
-	@SuppressWarnings("unused")
-	private String root;
+    private static final int NOT_FOUND = 404;
+    private static final int OK = 200;
+    @SuppressWarnings("unused")
+    private String root;
 
-	public Responder(String root) {
-		this.root = root;
-	}
+    public Responder(final String root) {
+        this.root = root;
+    }
 
-	public OrionResponse respond(OrionRequest request) {
-		//FileChecker fileChecker = new FileChecker(root);
-		if(request.getRoute().equals("/"))
-			return new StatusCodeResponse(200);
-		return new StatusCodeResponse(404);
-	}
+    public OrionResponse respond(final OrionRequest request) {
+        //FileChecker fileChecker = new FileChecker(root);
+        if("/".equals(request.getRoute())){
+            return new StatusCodeResponse(OK);
+        }
+        return new StatusCodeResponse(NOT_FOUND);
+    }
 }

@@ -17,7 +17,7 @@ public class OrionTest {
 		
 		Orion.parseArgs(arguments);
 		
-		assertEquals(5000, Orion.port);
+		assertEquals(5000, Orion.getPort());
 	}
 	
 	@Test
@@ -34,7 +34,7 @@ public class OrionTest {
 		
 		Orion.parseArgs(arguments);
 		
-		assertEquals(folder.getRoot().getAbsolutePath(), Orion.rootDirectory);
+		assertEquals(folder.getRoot().getAbsolutePath(), Orion.getRootDirectory());
 	}
 	
 	@Test
@@ -44,6 +44,6 @@ public class OrionTest {
 
 		Orion.parseArgs(arguments);
 
-		assertFalse(Orion.rootDirectory.equals(folder.getRoot().getAbsolutePath()));
+		assertFalse(Orion.getRootDirectory().equals(folder.getRoot().getAbsolutePath()));
 	}
 }

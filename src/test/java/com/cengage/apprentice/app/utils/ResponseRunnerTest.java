@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 
 import org.junit.Before;
@@ -28,11 +26,22 @@ public class ResponseRunnerTest {
 	}
 
 	@Test
+	public void constructorSetsPassedFields() {
+		ByteArrayInputStream bais = new ByteArrayInputStream("".getBytes());
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		ResponseRunner newRunner = new ResponseRunner(bais, baos, "rootDir");
+
+		assertEquals(bais, newRunner.getInputStream());
+		assertEquals(baos, newRunner.getOutputStream());
+		assertEquals("rootDir", newRunner.getRootDir());
+	}
+
+	@Test
 	public void getRequestReturnsProperRequestObjectFromStream()
 			throws Exception {
-		String requestString = GOOD_REQUEST;
 		ByteArrayInputStream bais = new ByteArrayInputStream(
-				requestString.getBytes());
+				GOOD_REQUEST.getBytes());
 
 		OrionRequest request = runner.getRequest(bais);
 
@@ -43,9 +52,8 @@ public class ResponseRunnerTest {
 	@Test
 	public void getRequestReturnsEmptyOrionRequestForBadRequestString()
 			throws Exception {
-		String requestString = BAD_REQUEST;
 		ByteArrayInputStream bais = new ByteArrayInputStream(
-				requestString.getBytes());
+				BAD_REQUEST.getBytes());
 
 		OrionRequest request = runner.getRequest(bais);
 
@@ -75,8 +83,19 @@ public class ResponseRunnerTest {
 				((String) response.getBody()).getBytes());
 
 		runner.processRequest(bais, baos, "");
-		
+
 		assertTrue(Arrays.equals(responseBytes, baos.toByteArray()));
+
+	}
+
+	@Test
+	public void runCallsProcessRequestWithSocketsStreams() throws Exception {
+		ByteArrayInputStream bais = new ByteArrayInputStream(GOOD_REQUEST.getBytes());
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ResponseRunner runner = Mockito.spy(new ResponseRunner(bais, baos, ""));
 		
+		runner.run();
+		
+		Mockito.verify(runner).processRequest(bais, baos, "");
 	}
 }

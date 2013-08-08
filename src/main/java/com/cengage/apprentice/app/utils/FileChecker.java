@@ -2,48 +2,50 @@ package com.cengage.apprentice.app.utils;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FileChecker {
 
-	private String rootDirectory;
-	private HashMap<String, String> mimeTypes;
+    private String rootDirectory;
+    private final Map<String, String> mimeTypes;
 
-	public FileChecker(String rootDirectory) {
-		this.setRootDirectory(rootDirectory);
-		mimeTypes = new HashMap<String, String>();
-		mimeTypes.put("html", "text/html");
-		mimeTypes.put("css", "text/css");
-		mimeTypes.put("js", "text/javascript");
-		mimeTypes.put("txt", "plain/text");
-	}
+    public FileChecker(final String rootDirectory) {
+        this.setRootDirectory(rootDirectory);
+        mimeTypes = new HashMap<String, String>();
+        mimeTypes.put("html", "text/html");
+        mimeTypes.put("css", "text/css");
+        mimeTypes.put("js", "text/javascript");
+        mimeTypes.put("txt", "plain/text");
+    }
 
-	public boolean fileExists(String fileName) {
-		File file = new File(getRootDirectory() + "/" + fileName);
-		return file.exists();
-	}
+    public boolean fileExists(final String fileName) {
+        final File file = new File(getRootDirectory() + "/" + fileName);
+        return file.exists();
+    }
 
-	public boolean directoryExists(String directory) {
-		boolean exists = fileExists(directory);
+    public boolean directoryExists(final String directory) {
+        final boolean exists = fileExists(directory);
 
-		return (exists && new File(getRootDirectory() + directory)
-				.isDirectory());
-	}
+        return exists && new File(getRootDirectory() + directory)
+        .isDirectory();
+    }
 
-	public String getFileExtension(String file) {
-		int extensionIndex = file.indexOf(".");
-		return file.substring(extensionIndex + 1);
-	}
+    public String getFileExtension(final String file) {
+        final char dot = '.';
+        final int extensionIndex = file.indexOf(dot);
+        return file.substring(extensionIndex + 1);
+    }
 
-	public String getMimeType(String extension) {
-		return mimeTypes.get(extension);
-	}
+    public String getMimeType(final String extension) {
+        return mimeTypes.get(extension);
+    }
 
-	public String getRootDirectory() {
-		return rootDirectory;
-	}
+    public String getRootDirectory() {
+        return rootDirectory;
+    }
 
-	public void setRootDirectory(String rootDirectory) {
-		this.rootDirectory = rootDirectory;
-	}
+    public void setRootDirectory(final String rootDirectory) {
+        this.rootDirectory = rootDirectory;
+    }
 
 }

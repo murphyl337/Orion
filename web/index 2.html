@@ -1,0 +1,14 @@
+<html>
+	<body>
+		<button type="button" onclick="sendRequest()">Send a request</button>
+	</body>
+
+	<script type="text/javascript">
+		$.get(
+		    "/",
+		    function(data) {
+		       alert('page content: ' + data);
+		    }
+		);
+	</script>
+</html>

@@ -3,71 +3,78 @@ package com.cengage.apprentice.app.utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
 
 import com.cengage.apprentice.app.main.OrionRequest;
 import com.cengage.apprentice.app.response.OrionResponse;
 
 public class ResponseRunner implements Runnable{
 
-	private Socket socket;
-	private String rootDir;
-	private String errorMessage;
-	
-	public ResponseRunner(){}
-	public ResponseRunner(Socket socket, String rootDir){
-		setSocket(socket);
-		setRootDir(rootDir);
-	}
-	
-	public OrionRequest getRequest(InputStream inputStream) {
-		String requestString = StreamConverter.inputStreamToString(inputStream);
-		OrionRequest request = new OrionRequest();
-		try{
-			request = new RequestParser().parse(requestString);			
-		}
-		catch(Exception e){
-			System.out.println("Error while parsing request");
-			request = new OrionRequest();
-		}
-		return request;
-	}
+    private InputStream inputStream;
+    private OutputStream outputStream;
+    private String rootDir;
+    private String errorMessage;
 
-	public OrionResponse getResponse(OrionRequest request) {
-		return new Responder(null).respond(request);
-	}
-	
-	public void processRequest(InputStream input, OutputStream output, String rootDir) throws IOException{
-		OrionRequest request = getRequest(input);
-		OrionResponse response = getResponse(request);
-		response.write(output, response.getBody());
-	}
+    public ResponseRunner(){errorMessage = "";}
+    public ResponseRunner(final InputStream input, final OutputStream output, final String rootDir){
+        this.inputStream = input;
+        this.outputStream = output;
+        this.rootDir = rootDir;
+        errorMessage = "";
+    }
 
-	public void run() {
-		try {
-			processRequest(getSocket().getInputStream(), getSocket().getOutputStream(), rootDir);
-		} catch (IOException e) {
-			errorMessage = "ResponseRunner: IOException processingRequest";
-			System.out.println(errorMessage);
-		}
-	}
-	public Socket getSocket() {
-		return socket;
-	}
-	public void setSocket(Socket socket) {
-		this.socket = socket;
-	}
-	
-	public String getRootDir(){
-		return rootDir;
-	}
-	
-	public void setRootDir(String dir){
-		this.rootDir = dir;
-	}
-	
-	public String getErrorMessage(){
-		return errorMessage;
-	}
-	
+    public OrionRequest getRequest(final InputStream inputStream) {
+        final String requestString = StreamConverter.inputStreamToString(inputStream);
+        OrionRequest request = new OrionRequest();
+        try{
+            request = new RequestParser().parse(requestString);
+        }
+        catch(ArrayIndexOutOfBoundsException e){
+            System.err.println("Error while parsing request: ArrayIndexOutOfBounds");
+            request = new OrionRequest();
+        }
+        return request;
+    }
+
+    public OrionResponse getResponse(final OrionRequest request) {
+        return new Responder(rootDir).respond(request);
+    }
+
+    public void processRequest(final InputStream input, final OutputStream output, final String rootDir){
+        final OrionRequest request = getRequest(input);
+        final OrionResponse response = getResponse(request);
+        try {
+            response.write(output, response.getBody());
+        } catch (IOException e) {
+            errorMessage = "ResponseRunner: IOException while writing response to socket";
+        }
+    }
+
+    public void run(){
+        processRequest(getInputStream(), getOutputStream(), rootDir);
+    }
+
+    public String getRootDir(){
+        return rootDir;
+    }
+
+    public void setRootDir(final String dir){
+        this.rootDir = dir;
+    }
+
+    public String getErrorMessage(){
+        return errorMessage;
+    }
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+    public void setInputStream(final InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+    public void setOutputStream(final OutputStream outputStream) {
+        this.outputStream = outputStream;
+    }
+
 }

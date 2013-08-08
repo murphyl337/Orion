@@ -5,30 +5,56 @@ import java.net.ServerSocket;
 
 import com.cengage.apprentice.app.utils.FileChecker;
 
-public class Orion {
-	public static int port = 10000;
-	public static String rootDirectory = "public";
+final class Orion {
+    private static final int DEFAULT_PORT = 10000;
+    private static int port = DEFAULT_PORT;
+    private static String rootDirectory = "public";
 
-	public static void main(String[] args) throws IOException {
-		parseArgs(args);
-		ServerSocket serverSocket = new ServerSocket(port);
-		OrionServer server = new OrionServer(serverSocket, rootDirectory);
-		server.listen();
-	}
+    private Orion() {}
 
-	public static void parseArgs(String[] args) throws NumberFormatException {
-		FileChecker checker = new FileChecker("");
-		int index = 0;
-		for (String arg : args) {
-			if (arg.equals("-p")) {
-				port = Integer.parseInt(args[index + 1]);
-			}
-			if (arg.equals("-d")) {
-				String tempDir = args[index + 1];
-				if(checker.directoryExists(tempDir))
-					rootDirectory = tempDir;
-			}
-			index++;
-		}
-	}
+    public static void main(final String[] args) throws IOException {
+        parseArgs(args);
+        final ServerSocket serverSocket = new ServerSocket(getPort());
+        final OrionServer server = new OrionServer(serverSocket,
+                getRootDirectory());
+        server.listen();
+    }
+
+    public static void parseArgs(final String[] args) {
+        final FileChecker checker = new FileChecker("");
+        int index = 0;
+        for (String arg : args) {
+            checkArgument(args, checker, index, arg);
+            index++;
+        }
+    }
+
+    private static void checkArgument(final String[] args,
+            final FileChecker checker, final int index, final String arg) {
+        if ("-p".equals(arg)) {
+            setPort(Integer.parseInt(args[index + 1]));
+        }
+        if ("-d".equals(arg)) {
+            final String tempDir = args[index + 1];
+            if (checker.directoryExists(tempDir)) {
+                setRootDirectory(tempDir);
+            }
+        }
+    }
+
+    public static String getRootDirectory() {
+        return rootDirectory;
+    }
+
+    public static void setRootDirectory(final String rootDirectory) {
+        Orion.rootDirectory = rootDirectory;
+    }
+
+    public static int getPort() {
+        return port;
+    }
+
+    public static void setPort(final int port) {
+        Orion.port = port;
+    }
 }

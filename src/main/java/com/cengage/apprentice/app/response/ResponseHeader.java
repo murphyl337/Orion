@@ -3,75 +3,85 @@ package com.cengage.apprentice.app.response;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ResponseHeader {
-	public static final String HTTP = "HTTP/1.1 ";
-	public static final String NEWLINE = "\r\n";
+    private static final String HTTP = "HTTP/1.1 ";
+    private static final String NEWLINE = "\r\n";
+    private static final int INTERNAL_SERVER_ERROR = 500;
+    private static final int NOT_FOUND = 404;
+    private static final int OK = 200;
 
-	private String status;
-	private Long contentLength;
-	private String contentType;
 
-	public void setStatus(int code) {
-		status = HTTP + String.valueOf(code) + " ";
-		switch (code) {
-		case 200:
-			status += "OK";
-			break;
+    private String status;
+    private Long contentLength;
+    private String contentType;
 
-		case 404:
-			status += "Not Found";
-			break;
+    public void setStatus(final int code) {
+        status = HTTP + code + " ";
+        switch (code) {
+        case OK:
+            status += "OK";
+            break;
 
-		case 500:
-			status += "Internal Server Error";
-		}
-	}
+        case NOT_FOUND:
+            status += "Not Found";
+            break;
 
-	public String getStatus() {
-		return status;
-	}
+        case INTERNAL_SERVER_ERROR:
+            status += "Internal Server Error";
+            break;
+            
+        default:
+            status += "";
+            break;
+        }
+    }
 
-	public String formatDate() {
-		DateFormat dateFormat = new SimpleDateFormat(
-				"E, dd MMM yyyy HH:mm:ss zz");
-		return "Date: " + dateFormat.format(new Date());
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getServer() {
-		return "Server: Orion";
-	}
+    public String formatDate() {
+        final DateFormat dateFormat = new SimpleDateFormat(
+                "E, dd MMM yyyy HH:mm:ss zz", Locale.US);
+        return "Date: " + dateFormat.format(new Date());
+    }
 
-	public void setContentLength(Long fileLength) {
-		contentLength = fileLength;
-	}
+    public String getServer() {
+        return "Server: Orion";
+    }
 
-	public String getContentLength() {
-		return "Content-Length: " + contentLength;
-	}
+    public void setContentLength(final Long fileLength) {
+        contentLength = fileLength;
+    }
 
-	public void setContentType(String cType) {
-		contentType = cType;
-	}
+    public String getContentLength() {
+        return "Content-Length: " + contentLength;
+    }
 
-	public String getContentType() {
-		return "Content-Type: " + contentType;
-	}
+    public void setContentType(final String cType) {
+        contentType = cType;
+    }
 
-	public String composeHeader() {
-		StringBuilder header = new StringBuilder();
-		header.append(status);
-		header.append(NEWLINE);
-		header.append(formatDate());
-		header.append(NEWLINE);
-		header.append(getServer());
-		header.append(NEWLINE);
-		header.append(getContentLength());
-		header.append(NEWLINE);
-		header.append(getContentType());
-		header.append(NEWLINE);
-		header.append(NEWLINE);
+    public String getContentType() {
+        return "Content-Type: " + contentType;
+    }
 
-		return header.toString();
-	}
+    public String composeHeader() {
+        final StringBuilder header = new StringBuilder();
+        header.append(status);
+        header.append(NEWLINE);
+        header.append(formatDate());
+        header.append(NEWLINE);
+        header.append(getServer());
+        header.append(NEWLINE);
+        header.append(getContentLength());
+        header.append(NEWLINE);
+        header.append(getContentType());
+        header.append(NEWLINE);
+        header.append(NEWLINE);
+
+        return header.toString();
+    }
 }

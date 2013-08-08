@@ -1,11 +1,13 @@
 package com.cengage.apprentice.app.main;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -19,11 +21,29 @@ public class OrionServerTest {
 		serverSocket = new ServerSocket(8000);
 		server = new OrionServer(serverSocket, "");
 	}
+	
+	@After
+	public void tearDown(){
+		server.stopServer();
+	}
+	
+	@Test
+	public void serverIsListeningWhenInstantiated() throws Exception {
+		OrionServer newServer = new OrionServer(serverSocket, "");
+		assertTrue(newServer.isListening());
+		newServer.stopServer();
+	}
 
 	@Test
 	public void stopServerClosesServerSocket() throws Exception {
 		server.stopServer();
 		assertTrue(server.getServerSocket().isClosed());
+	}
+	
+	@Test
+	public void stopServerSetsListeningToFalse() throws Exception {
+		server.stopServer();
+		assertFalse(server.isListening());
 	}
 	
 	@Test
@@ -34,6 +54,8 @@ public class OrionServerTest {
 		
 		someServer.stopServer();
 		
-		assertTrue(someServer.getErrorMessage().contains("IOException when closing port:"));
+		assertTrue(someServer.getErrorMessage().contains("IOException when closing socket"));
 	}
+	
+	
 }

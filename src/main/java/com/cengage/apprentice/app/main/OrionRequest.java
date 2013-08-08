@@ -1,33 +1,23 @@
 package com.cengage.apprentice.app.main;
 
 public class OrionRequest {
-	private String[] header;
-	private String route;
-	private String method;
+    private String route;
+    private String method;
 
-	public String[] getHeader() {
-		return header;
-	}
+    public String getMethod() {
+        return method;
+    }
 
-	public void setHeader(String[] header) {
-		this.header = header;
-	}
+    public void setMethod(final String theMethod) {
+        this.method = theMethod;
+    }
 
+    public String getRoute() {
+        return route;
+    }
 
-	public String getMethod() {
-		return method;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
-	}
-
-	public String getRoute() {
-		return route;
-	}
-
-	public void setRoute(String route) {
-		this.route = route;
-	}
+    public void setRoute(final String theRoute) {
+        this.route = theRoute;
+    }
 
 }

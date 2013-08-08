@@ -9,78 +9,59 @@ import java.net.Socket;
 import com.cengage.apprentice.app.utils.ResponseRunner;
 
 public class OrionServer {
-	private String rootDir;
-	private ServerSocket serverSocket;
-	private int port;
-	private String errorMessage;
+    private final String rootDir;
+    private final ServerSocket serverSocket;
+    private String errorMessage;
+    private boolean listening;
 
-	public OrionServer(ServerSocket serverSocket, String rootDir) {
-		this.rootDir = rootDir;
-		this.serverSocket = serverSocket;
-	}
+    public OrionServer(final ServerSocket serverSocket, final String rootDir) {
+        this.rootDir = rootDir;
+        this.serverSocket = serverSocket;
+        listening = true;
+    }
 
-	public void listen() throws IOException {
+    public void listen() throws IOException {
 
-		while (true) {
-			System.out.println("Getting the client socket...");
-			final Socket clientConnection = serverSocket.accept();
+        while (listening) {
+            final Socket clientConnection = serverSocket.accept();
+            respondToRequest(clientConnection);
+        }
+    }
 
-			try{
-				ResponseRunner responseRunner = new ResponseRunner(
-						clientConnection, rootDir);
-				
-				Thread responseThread = new Thread(responseRunner, "orion-response-thread " + getAllStackTraces().size());
-				System.out.println("Starting thread: " + responseThread.getName());
-				responseThread.run();
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-			finally{
-				clientConnection.close();
-			}
-		}
-	}
+    private void respondToRequest(final Socket clientConnection)
+            throws IOException {
+        final ResponseRunner responseRunner = new ResponseRunner(
+                clientConnection.getInputStream(),
+                clientConnection.getOutputStream(), rootDir);
 
-	public void stopServer() {
-		try {
-			serverSocket.close();
-		} catch (IOException e) {
-			setErrorMessage("IOException when closing port: " + port);
-			System.err.println(errorMessage);
-		}
-	}
+        final Thread responseThread = new Thread(responseRunner,
+                "orion-response-thread " + getAllStackTraces().size());
+        responseThread.run();
+    }
 
-	public ServerSocket getServerSocket() {
-		return serverSocket;
-	}
+    public void stopServer() {
+        try {
+            serverSocket.close();
+            listening = false;
+        } catch (IOException e) {
+            setErrorMessage("IOException when closing socket");
+        }
+    }
 
-	public void setServerSocket(ServerSocket serverSocket) {
-		this.serverSocket = serverSocket;
-	}
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
 
-	public String getRootDir() {
-		return rootDir;
-	}
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
-	public void setRootDir(String rootDir) {
-		this.rootDir = rootDir;
-	}
+    public void setErrorMessage(final String message) {
+        this.errorMessage = message;
+    }
 
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-	
-	public String getErrorMessage(){
-		return errorMessage;
-	}
-	
-	public void setErrorMessage(String message){
-		this.errorMessage = message;
-	}
+    public boolean isListening() {
+        return listening;
+    }
 
 }

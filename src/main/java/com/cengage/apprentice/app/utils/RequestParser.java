@@ -4,42 +4,45 @@ import com.cengage.apprentice.app.main.OrionRequest;
 
 public class RequestParser {
 
-	public OrionRequest parse(String requestString)
-			throws ArrayIndexOutOfBoundsException {
-		OrionRequest request = new OrionRequest();
-		request.setHeader(parseHeader(requestString));
-		request.setMethod(parseMethod(requestString));
-		request.setRoute(parseRoute(requestString));
+    private static final int MAX_FILE_EXTENSION_LENGTH = 4;
+    private static final int MIN_FILE_EXTENSION_LENGTH = 2;
 
-		return request;
+    public OrionRequest parse(final String requestString){
+        final OrionRequest request = new OrionRequest();
+        request.setMethod(parseMethod(requestString));
+        request.setRoute(parseRoute(requestString));
 
-	}
+        return request;
 
-	private String[] parseHeader(String requestString) {
-		String[] header = requestString.split("\\r?\\n");
-		return header[0].split(" ");
-	}
+    }
 
-	private String parseMethod(String requestString) {
-		String[] header = parseHeader(requestString);
-		return header[0];
-	}
+    private String[] parseHeader(final String requestString) {
+        final String[] header = requestString.split("\\r?\\n");
+        return header[0].split(" ");
+    }
 
-	private String parseRoute(String requestString) {
-		String[] header = parseHeader(requestString);
-		String route = header[1];
-		if (hasTrailingSlash(route) || hasFileExtension(route))
-			return route;
-		return route + "/";
-	}
+    private String parseMethod(final String requestString) {
+        final String[] header = parseHeader(requestString);
+        return header[0];
+    }
 
-	public boolean hasTrailingSlash(String route) {
-		return route.charAt(route.length() - 1) == ('/');
-	}
+    private String parseRoute(final String requestString) {
+        final String[] header = parseHeader(requestString);
+        final String route = header[1];
+        if (hasTrailingSlash(route) || hasFileExtension(route)){
+            return route;
+        }
+        return route + "/";
+    }
 
-	public boolean hasFileExtension(String filePath) {
-		int charactersAfterPeriod = (filePath.length() - 1)
-				- filePath.lastIndexOf(".");
-		return charactersAfterPeriod >= 2 && charactersAfterPeriod <= 4;
-	}
+    public boolean hasTrailingSlash(final String route) {
+        return route.charAt(route.length() - 1) == ('/');
+    }
+
+    public boolean hasFileExtension(final String filePath) {
+        final char dot = '.';
+        final int charactersAfterPeriod = (filePath.length() - 1)
+                - filePath.lastIndexOf(dot);
+        return charactersAfterPeriod >= MIN_FILE_EXTENSION_LENGTH && charactersAfterPeriod <= MAX_FILE_EXTENSION_LENGTH;
+    }
 }
