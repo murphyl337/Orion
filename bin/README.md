@@ -1,4 +1,0 @@
-Orion
-=====
-
-Java HTTP Server
