@@ -1,5 +1,6 @@
 package com.cengage.apprentice.app.utils;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -50,15 +51,15 @@ public class ResponseRunnerTest {
 	}
 
 	@Test
-	public void getRequestReturnsEmptyOrionRequestForBadRequestString()
+	public void getRequestReturnsBadOrionRequestForBadRequestString()
 			throws Exception {
 		ByteArrayInputStream bais = new ByteArrayInputStream(
 				BAD_REQUEST.getBytes());
 
 		OrionRequest request = runner.getRequest(bais);
 
-		assertEquals(request.getMethod(), null);
-		assertEquals(request.getRoute(), null);
+		assertNull(request.getMethod());
+		assertNull(request.getRoute());
 	}
 
 	@Test

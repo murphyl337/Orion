@@ -7,8 +7,9 @@ public class RequestParser {
     private static final int MAX_FILE_EXTENSION_LENGTH = 4;
     private static final int MIN_FILE_EXTENSION_LENGTH = 2;
 
-    public OrionRequest parse(final String requestString){
+    public OrionRequest parse(final String requestString) {
         final OrionRequest request = new OrionRequest();
+
         request.setMethod(parseMethod(requestString));
         request.setRoute(parseRoute(requestString));
 
@@ -29,7 +30,7 @@ public class RequestParser {
     private String parseRoute(final String requestString) {
         final String[] header = parseHeader(requestString);
         final String route = header[1];
-        if (hasTrailingSlash(route) || hasFileExtension(route)){
+        if (hasTrailingSlash(route) || hasFileExtension(route)) {
             return route;
         }
         return route + "/";
@@ -43,6 +44,7 @@ public class RequestParser {
         final char dot = '.';
         final int charactersAfterPeriod = (filePath.length() - 1)
                 - filePath.lastIndexOf(dot);
-        return charactersAfterPeriod >= MIN_FILE_EXTENSION_LENGTH && charactersAfterPeriod <= MAX_FILE_EXTENSION_LENGTH;
+        return charactersAfterPeriod >= MIN_FILE_EXTENSION_LENGTH
+                && charactersAfterPeriod <= MAX_FILE_EXTENSION_LENGTH;
     }
 }

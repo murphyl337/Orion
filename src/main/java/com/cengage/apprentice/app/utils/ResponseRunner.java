@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.log4j.Logger;
+
 import com.cengage.apprentice.app.main.OrionRequest;
 import com.cengage.apprentice.app.response.OrionResponse;
 
 public class ResponseRunner implements Runnable{
-
+    private static final Logger LOGGER = Logger.getLogger(ResponseRunner.class);
     private InputStream inputStream;
     private OutputStream outputStream;
     private String rootDir;
@@ -24,12 +26,13 @@ public class ResponseRunner implements Runnable{
 
     public OrionRequest getRequest(final InputStream inputStream) {
         final String requestString = StreamConverter.inputStreamToString(inputStream);
-        OrionRequest request = new OrionRequest();
+        LOGGER.info("Getting OrionRequest for requestString: " + requestString);
+        OrionRequest request = null;
         try{
             request = new RequestParser().parse(requestString);
         }
         catch(ArrayIndexOutOfBoundsException e){
-            System.err.println("Error while parsing request: ArrayIndexOutOfBounds");
+            LOGGER.error("Error while parsing request: ArrayIndexOutOfBounds");
             request = new OrionRequest();
         }
         return request;
@@ -45,7 +48,7 @@ public class ResponseRunner implements Runnable{
         try {
             response.write(output, response.getBody());
         } catch (IOException e) {
-            errorMessage = "ResponseRunner: IOException while writing response to socket";
+            LOGGER.error("ResponseRunner: IOException while writing response to socket");
         }
     }
 

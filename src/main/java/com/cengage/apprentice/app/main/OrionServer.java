@@ -1,23 +1,26 @@
 package com.cengage.apprentice.app.main;
 
-import static java.lang.Thread.getAllStackTraces;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.apache.log4j.Logger;
+
 import com.cengage.apprentice.app.utils.ResponseRunner;
 
 public class OrionServer {
+    private static final Logger LOGGER = Logger.getLogger(OrionServer.class);
     private final String rootDir;
     private final ServerSocket serverSocket;
     private String errorMessage;
     private boolean listening;
+    private ThreadGroup threadGroup;
 
     public OrionServer(final ServerSocket serverSocket, final String rootDir) {
         this.rootDir = rootDir;
         this.serverSocket = serverSocket;
         listening = true;
+        threadGroup = new ThreadGroup("Response Group");
     }
 
     public void listen() throws IOException {
@@ -25,6 +28,7 @@ public class OrionServer {
         while (listening) {
             final Socket clientConnection = serverSocket.accept();
             respondToRequest(clientConnection);
+            clientConnection.close();
         }
     }
 
@@ -34,8 +38,9 @@ public class OrionServer {
                 clientConnection.getInputStream(),
                 clientConnection.getOutputStream(), rootDir);
 
-        final Thread responseThread = new Thread(responseRunner,
-                "orion-response-thread " + getAllStackTraces().size());
+        final Thread responseThread = new Thread(threadGroup, responseRunner,
+                "orion-response-thread " + Thread.activeCount());
+        LOGGER.info("Creating responseThread: " + responseThread.getName());
         responseThread.run();
     }
 

@@ -3,20 +3,25 @@ package com.cengage.apprentice.app.main;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import org.apache.log4j.Logger;
+
 import com.cengage.apprentice.app.utils.FileChecker;
 
 final class Orion {
     private static final int DEFAULT_PORT = 10000;
     private static int port = DEFAULT_PORT;
     private static String rootDirectory = "public";
+    private static final Logger LOGGER = Logger.getLogger(Orion.class);
 
-    private Orion() {}
+    private Orion() {
+    }
 
     public static void main(final String[] args) throws IOException {
         parseArgs(args);
         final ServerSocket serverSocket = new ServerSocket(getPort());
         final OrionServer server = new OrionServer(serverSocket,
                 getRootDirectory());
+        LOGGER.info("Orion server listening on port: " + port);
         server.listen();
     }
 

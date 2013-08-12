@@ -23,20 +23,30 @@
 			<artifactId>guava</artifactId>
 			<version>r05</version>
 		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.4</version>
 				<configuration>
-					<archive>
-						<manifest>
+					<programs>
+						<program>
 							<mainClass>com.cengage.apprentice.app.main.Orion</mainClass>
-						</manifest>
-					</archive>
+							<name>orion</name>
+						</program>
+					</programs>
 				</configuration>
 			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> 
+				<configuration> <archive> <manifest> <mainClass>com.cengage.apprentice.app.main.Orion</mainClass> 
+				</manifest> </archive> </configuration> </plugin> -->
 		</plugins>
 	</build>
 </project>
