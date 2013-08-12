@@ -8,11 +8,10 @@ public class RequestParser {
     private static final int MIN_FILE_EXTENSION_LENGTH = 2;
 
     public OrionRequest parse(final String requestString) {
-        final OrionRequest request = new OrionRequest();
-
-        request.setMethod(parseMethod(requestString));
-        request.setRoute(parseRoute(requestString));
-
+        final String method = parseMethod(requestString);
+        final String route = parseRoute(requestString);
+        final OrionRequest request = new OrionRequest(method, route);
+        
         return request;
 
     }

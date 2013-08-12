@@ -46,16 +46,5 @@ public class OrionServerTest {
 		assertFalse(server.isListening());
 	}
 	
-	@Test
-	public void stopServerSetsErrorMessageWhenClosingSocketThrowsIOException() throws Exception {
-		ServerSocket mockSocket = Mockito.mock(ServerSocket.class);
-		doThrow(new IOException()).when(mockSocket).close();
-		OrionServer someServer = new OrionServer(mockSocket, "/");
-		
-		someServer.stopServer();
-		
-		assertTrue(someServer.getErrorMessage().contains("IOException when closing socket"));
-	}
-	
 	
 }

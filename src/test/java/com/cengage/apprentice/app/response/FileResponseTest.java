@@ -45,20 +45,6 @@ public class FileResponseTest {
 	}
 	
 	@Test
-	(expected=FileNotFoundException.class)
-	public void fileResponseForNonExistingFileThrowsFileNotFoundException() throws Exception {
-		@SuppressWarnings("unused")
-		FileResponse badResponse = new FileResponse("bad", "response");
-	}
-	
-	@Test
-	public void copyStreamWritesContentsOfInputToOutput() throws Exception {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		response.copyToStream(response.getBody(), baos);
-		assertTrue(Arrays.equals(baos.toByteArray(), Files.toByteArray(tempFile)));
-	}
-	
-	@Test
 	public void writeWillWriteHeaderAndContentsOfFileToOutputStream() throws Exception {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		byte[] responseBytes = Bytes.concat(response.getHeader().getBytes(), Files.toByteArray(tempFile));

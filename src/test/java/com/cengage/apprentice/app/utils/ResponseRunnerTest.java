@@ -58,8 +58,8 @@ public class ResponseRunnerTest {
 
 		OrionRequest request = runner.getRequest(bais);
 
-		assertNull(request.getMethod());
-		assertNull(request.getRoute());
+		assertTrue(request.getMethod().equals("bad"));
+		assertTrue(request.getRoute().equals("request"));
 	}
 
 	@Test

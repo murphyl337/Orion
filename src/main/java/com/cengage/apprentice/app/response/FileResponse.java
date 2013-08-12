@@ -1,11 +1,15 @@
 package com.cengage.apprentice.app.response;
 
+import static org.apache.commons.io.FileUtils.copyFile;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+
+import org.apache.commons.io.FileUtils;
 
 import com.cengage.apprentice.app.utils.FileChecker;
 
@@ -20,7 +24,7 @@ public class FileResponse implements OrionResponse {
      */
     private final String filePath;
     private String header;
-    private FileInputStream body;
+    private File body;
     private final FileChecker fileChecker;
 
     public FileResponse(final String root, final String requestedPath)
@@ -40,29 +44,20 @@ public class FileResponse implements OrionResponse {
         this.header = responseHeader.composeHeader();
     }
 
-    public void setBody() throws FileNotFoundException {
-        this.body = new FileInputStream(filePath);
+    public void setBody(){
+        this.body = new File(filePath);
     }
 
     public void write(final OutputStream output, final Object body) throws IOException {
         output.write(getHeader().getBytes(Charset.forName("UTF-8")));
-        copyToStream(body, output);
-    }
-
-    
-    protected void copyToStream(final Object input, final OutputStream output)
-            throws IOException {
-//        final File file = new File(filePath);
-//        final byte[] bytes = new byte[(int) file.length()];
-//        body.read(bytes);
-//        output.write(bytes);
+        copyFile((File)body, output);
     }
 
     public String getHeader() {
         return header;
     }
 
-    public FileInputStream getBody() {
+    public File getBody() {
         return body;
     }
 

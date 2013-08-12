@@ -12,7 +12,6 @@ public class OrionServer {
     private static final Logger LOGGER = Logger.getLogger(OrionServer.class);
     private final String rootDir;
     private final ServerSocket serverSocket;
-    private String errorMessage;
     private boolean listening;
     private ThreadGroup threadGroup;
 
@@ -49,20 +48,12 @@ public class OrionServer {
             serverSocket.close();
             listening = false;
         } catch (IOException e) {
-            setErrorMessage("IOException when closing socket");
+            LOGGER.error("IOException stopping server");
         }
     }
 
     public ServerSocket getServerSocket() {
         return serverSocket;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(final String message) {
-        this.errorMessage = message;
     }
 
     public boolean isListening() {
