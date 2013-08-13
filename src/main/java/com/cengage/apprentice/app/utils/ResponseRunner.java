@@ -33,7 +33,7 @@ public class ResponseRunner implements Runnable{
         }
         catch(ArrayIndexOutOfBoundsException e){
             LOGGER.error("Error while parsing request: ArrayIndexOutOfBounds");
-            request = new OrionRequest("bad", "request");
+            request = null;
         }
         return request;
     }
