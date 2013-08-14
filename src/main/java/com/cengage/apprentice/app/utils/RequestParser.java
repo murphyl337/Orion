@@ -15,7 +15,8 @@ public class RequestParser {
         request.setMethod(parseMethod(requestString));
         request.setRawRoute(parseRawRoute(requestString));
         request.setRoute(parseRoute(requestString));
-        
+        request.setQueryStringTable(parseQueryStrings(requestString));
+      
         return request;
     }
 

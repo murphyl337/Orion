@@ -32,7 +32,7 @@ public class FileChecker {
 
     public String getFileExtension(final String file) {
         final char dot = '.';
-        final int extensionIndex = file.indexOf(dot);
+        final int extensionIndex = file.lastIndexOf(dot);
         return file.substring(extensionIndex + 1);
     }
 

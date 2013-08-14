@@ -51,14 +51,14 @@ public class ResponseRunnerTest {
 	}
 
 	@Test
-	public void getRequestReturnsNullBadRequestString()
+	public void getRequestReturnsEmptyRequestForBadRequestString()
 			throws Exception {
 		ByteArrayInputStream bais = new ByteArrayInputStream(
 				BAD_REQUEST.getBytes());
 
 		OrionRequest request = runner.getRequest(bais);
 
-		assertNull(request);
+		assertNotNull(request);
 	}
 
 	@Test

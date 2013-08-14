@@ -7,11 +7,13 @@ import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
+import com.cengage.apprentice.app.game.GameController;
 import com.cengage.apprentice.app.main.OrionRequest;
 import com.cengage.apprentice.app.response.OrionResponse;
 import com.cengage.apprentice.app.response.StatusCodeResponse;
 
 public class ResponseRunner implements Runnable{
+    private static final int FILE_NOT_FOUND = 404;
     private static final Logger LOGGER = Logger.getLogger(ResponseRunner.class);
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -27,22 +29,22 @@ public class ResponseRunner implements Runnable{
     public OrionRequest getRequest(final InputStream inputStream) {
         final String requestString = StreamConverter.inputStreamToString(inputStream);
         LOGGER.info("Getting OrionRequest for requestString: " + requestString);
-        OrionRequest request = null;
+        OrionRequest request = new OrionRequest();
         try{
             request = new RequestParser().parse(requestString);
         }
         catch(ArrayIndexOutOfBoundsException e){
             LOGGER.error("Error while parsing request: ArrayIndexOutOfBounds");
-            request = null;
         }
         return request;
     }
 
     public OrionResponse getResponse(final OrionRequest request) {
+        final GameController controller = new GameController();
         try{
-            return new Responder(rootDir).respond(request);
+            return new Responder(rootDir, controller).respond(request);
         }catch(FileNotFoundException e){
-            return new StatusCodeResponse(404);
+            return new StatusCodeResponse(FILE_NOT_FOUND);
         }
     }
 
