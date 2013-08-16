@@ -27,18 +27,6 @@ public class ResponseRunnerTest {
 	}
 
 	@Test
-	public void constructorSetsPassedFields() {
-		ByteArrayInputStream bais = new ByteArrayInputStream("".getBytes());
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-		ResponseRunner newRunner = new ResponseRunner(bais, baos, "rootDir");
-
-		assertEquals(bais, newRunner.getInputStream());
-		assertEquals(baos, newRunner.getOutputStream());
-		assertEquals("rootDir", newRunner.getRootDir());
-	}
-
-	@Test
 	public void getRequestReturnsProperRequestObjectFromStream()
 			throws Exception {
 		ByteArrayInputStream bais = new ByteArrayInputStream(
