@@ -14,7 +14,7 @@ public class OrionServer {
     private final ServerSocket serverSocket;
     private boolean listening;
     private ThreadGroup threadGroup;
-
+    
     public OrionServer(final ServerSocket serverSocket, final String rootDir) {
         this.rootDir = rootDir;
         this.serverSocket = serverSocket;

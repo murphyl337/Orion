@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import org.apache.commons.io.FileUtils;
 
 import com.cengage.apprentice.app.utils.FileChecker;
+import com.cengage.apprentice.app.utils.MimeTypes;
 
 public class FileResponse implements OrionResponse {
     private static final int STATUSCODE200 = 200;
@@ -25,12 +26,10 @@ public class FileResponse implements OrionResponse {
     private final String filePath;
     private String header;
     private File body;
-    private final FileChecker fileChecker;
 
     public FileResponse(final String root, final String requestedPath)
             throws FileNotFoundException {
         this.filePath = root + requestedPath;
-        this.fileChecker = new FileChecker(root);
         setBody();
         setHeader();
     }
@@ -38,8 +37,7 @@ public class FileResponse implements OrionResponse {
     public void setHeader() {
         final ResponseHeader responseHeader = new ResponseHeader();
         responseHeader.setStatus(STATUSCODE200);
-        responseHeader.setContentType(fileChecker.getMimeType(fileChecker
-                .getFileExtension(filePath)));
+        responseHeader.setContentType(MimeTypes.get(FileChecker.getFileExtension(filePath)));
         responseHeader.setContentLength(new File(filePath).length());
         this.header = responseHeader.composeHeader();
     }

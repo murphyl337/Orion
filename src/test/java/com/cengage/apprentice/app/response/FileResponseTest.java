@@ -41,7 +41,7 @@ public class FileResponseTest {
 	
 	@Test
 	public void fileResponseForExistingTxtFileHasTxtMimeTypeInHeader() throws Exception {
-		assertTrue(response.getHeader().contains("plain/text"));
+		assertTrue(response.getHeader().contains("text/plain"));
 	}
 	
 	@Test

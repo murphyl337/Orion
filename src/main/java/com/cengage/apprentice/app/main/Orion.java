@@ -26,22 +26,21 @@ final class Orion {
     }
 
     public static void parseArgs(final String[] args) {
-        final FileChecker checker = new FileChecker("");
         int index = 0;
         for (String arg : args) {
-            checkArgument(args, checker, index, arg);
+            checkArgument(args, index, arg);
             index++;
         }
     }
 
-    private static void checkArgument(final String[] args,
-            final FileChecker checker, final int index, final String arg) {
+    private static void checkArgument(final String[] args, final int index,
+            final String arg) {
         if ("-p".equals(arg)) {
             setPort(Integer.parseInt(args[index + 1]));
         }
         if ("-d".equals(arg)) {
             final String tempDir = args[index + 1];
-            if (checker.directoryExists(tempDir)) {
+            if (FileChecker.directoryExists("", tempDir)) {
                 setRootDirectory(tempDir);
             }
         }

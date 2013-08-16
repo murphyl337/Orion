@@ -7,7 +7,6 @@ import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
-import com.cengage.apprentice.app.game.GameController;
 import com.cengage.apprentice.app.main.OrionRequest;
 import com.cengage.apprentice.app.response.OrionResponse;
 import com.cengage.apprentice.app.response.StatusCodeResponse;
@@ -40,9 +39,8 @@ public class ResponseRunner implements Runnable{
     }
 
     public OrionResponse getResponse(final OrionRequest request) {
-        final GameController controller = new GameController();
         try{
-            return new Responder(rootDir, controller).respond(request);
+            return new Responder(rootDir).respond(request);
         }catch(FileNotFoundException e){
             return new StatusCodeResponse(FILE_NOT_FOUND);
         }

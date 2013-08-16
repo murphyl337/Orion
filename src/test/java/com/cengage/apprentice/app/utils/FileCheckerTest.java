@@ -16,55 +16,49 @@ public class FileCheckerTest {
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 	
-	FileChecker checker;
 	File tempFile;
+	String rootDir;
+	
 	
 	@Before
 	public void setup() throws IOException{
 		tempFile = folder.newFile("temp.txt");
-		checker = new FileChecker(folder.getRoot().getAbsolutePath());
+		rootDir = folder.getRoot().getAbsolutePath();
 	}
 	
 	@Test
 	public void fileExistsReturnsTrueForFileWithoutFrontSlashTest() {
-		assertTrue(checker.fileExists("temp.txt"));
+		assertTrue(FileChecker.fileExists(rootDir, "temp.txt"));
 	}
 	
 	@Test
-	public void fileExistsReturnsTrueForFileWithFrontSlash() throws Exception {
-		assertTrue(checker.fileExists("/temp.txt"));
+	public void fileExistsReturnsTrueForFileWithFrontSlash(){
+		assertTrue(FileChecker.fileExists(rootDir, "/temp.txt"));
 	}
 	
 	@Test
-	public void fileExistsReturnsFalseForFileThatDoesNotExist() throws Exception {
-		assertFalse(checker.fileExists("doop.doop"));
+	public void fileExistsReturnsFalseForFileThatDoesNotExist(){
+		assertFalse(FileChecker.fileExists(rootDir, "doop.doop"));
 	}
 	
 	@Test
-	public void directoryExistsReturnsTrueForRootDirectory() throws Exception {
-		assertTrue(checker.directoryExists(""));
+	public void directoryExistsReturnsTrueForRootDirectory(){
+		assertTrue(FileChecker.directoryExists(rootDir, ""));
 	}
 	
 	@Test
-	public void directoryExistsReturnsFalseForNonExistingDirectory() throws Exception {
-		assertFalse(checker.directoryExists("shoopdawoop"));
+	public void directoryExistsReturnsFalseForNonExistingDirectory(){
+		assertFalse(FileChecker.directoryExists(rootDir, "shoopdawoop"));
 	}
 	
 	@Test
 	public void directoryExistsReturnsFalseForExistingFile() throws Exception {
-		assertFalse(checker.directoryExists("temp.txt"));
+		assertFalse(FileChecker.directoryExists(rootDir, "temp.txt"));
 	}
 	@Test
 	public void getFileExtensionTest(){
-		assertTrue(checker.getFileExtension("index.html").equals("html"));
-		assertTrue(checker.getFileExtension("doop.pdf").equals("pdf"));
-	}
-
-	@Test
-	public void getMIMETypeTest() throws Exception {
-		assertEquals("text/html", checker.getMimeType("html"));
-		assertEquals("text/css", checker.getMimeType("css"));
-		assertEquals("text/javascript", checker.getMimeType("js"));
+		assertTrue(FileChecker.getFileExtension("index.html").equals("html"));
+		assertTrue(FileChecker.getFileExtension("doop.pdf").equals("pdf"));
 	}
 	
 }
