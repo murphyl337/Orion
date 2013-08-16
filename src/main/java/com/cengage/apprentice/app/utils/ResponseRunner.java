@@ -25,17 +25,10 @@ public class ResponseRunner implements Runnable{
         this.rootDir = rootDir;
     }
 
-    public OrionRequest getRequest(final InputStream inputStream) {
+    public OrionRequest getRequest(final InputStream inputStream){
         final String requestString = StreamConverter.inputStreamToString(inputStream);
         LOGGER.info("Getting OrionRequest for requestString: " + requestString);
-        OrionRequest request = new OrionRequest();
-        try{
-            request = new RequestParser().parse(requestString);
-        }
-        catch(ArrayIndexOutOfBoundsException e){
-            LOGGER.error("Error while parsing request: ArrayIndexOutOfBounds");
-        }
-        return request;
+        return RequestParser.parse(requestString);
     }
 
     public OrionResponse getResponse(final OrionRequest request) {
