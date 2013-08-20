@@ -1,22 +1,20 @@
 package com.cengage.apprentice.app.utils;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-public class MockServerSocket{
-	private InputStream inputStream;
-	private OutputStream outputStream;
+public class MockServerSocket extends ServerSocket{
+	String mockInput;
 	
-	public InputStream getInputStream() {
-		return inputStream;
+	public MockServerSocket(String mockInput) throws IOException{
+	    this.mockInput = mockInput;
 	}
-	public void setInputStream(InputStream inputStream) {
-		this.inputStream = inputStream;
+	
+	@Override
+	public Socket accept() throws IOException{
+	    return new MockSocket(mockInput);
 	}
-	public OutputStream getOutputStream() {
-		return outputStream;
-	}
-	public void setOutputStream(OutputStream outputStream) {
-		this.outputStream = outputStream;
-	}
+	
+	
 }

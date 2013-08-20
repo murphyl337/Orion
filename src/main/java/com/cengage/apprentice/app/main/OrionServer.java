@@ -6,6 +6,8 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
+import com.cengage.apprentice.app.utils.RequestProcessor;
+import com.cengage.apprentice.app.utils.Respondable;
 import com.cengage.apprentice.app.utils.ResponseRunner;
 
 public class OrionServer {
@@ -14,7 +16,7 @@ public class OrionServer {
     private final ServerSocket serverSocket;
     private boolean listening;
     private ThreadGroup threadGroup;
-    
+
     public OrionServer(final ServerSocket serverSocket, final String rootDir) {
         this.rootDir = rootDir;
         this.serverSocket = serverSocket;
@@ -22,23 +24,21 @@ public class OrionServer {
         threadGroup = new ThreadGroup("Response Group");
     }
 
-    public void listen() throws IOException {
-
+    public void listen(final Respondable responder) throws IOException {
         while (listening) {
             final Socket clientConnection = serverSocket.accept();
-            respondToRequest(clientConnection);
+            final RequestProcessor requestProcessor = new RequestProcessor(
+                    clientConnection, rootDir, responder);
+
+            respondToRequest(requestProcessor);
             clientConnection.close();
         }
     }
 
-    private void respondToRequest(final Socket clientConnection)
-            throws IOException {
-        final ResponseRunner responseRunner = new ResponseRunner(
-                clientConnection.getInputStream(),
-                clientConnection.getOutputStream(), rootDir);
-
-        final Thread responseThread = new Thread(threadGroup, responseRunner,
-                "orion-response-thread " + Thread.activeCount());
+    private void respondToRequest(final RequestProcessor processor) throws IOException {
+        final ResponseRunner runner = new ResponseRunner(processor);
+        final Thread responseThread = new Thread(threadGroup, runner,
+                "orion-response-thread");
         LOGGER.info("Creating responseThread: " + responseThread.getName());
         responseThread.run();
     }

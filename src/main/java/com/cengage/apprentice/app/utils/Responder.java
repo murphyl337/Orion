@@ -9,7 +9,7 @@ import com.cengage.apprentice.app.response.FileResponse;
 import com.cengage.apprentice.app.response.OrionResponse;
 import com.cengage.apprentice.app.response.StatusCodeResponse;
 
-public class Responder {
+public class Responder implements Respondable {
     private static final Logger LOGGER = Logger.getLogger(Responder.class);
     private static final int NOT_FOUND = 404;
     private static final int OK = 200;
